@@ -1,0 +1,12 @@
+{
+    "name": "maths",
+    "version": "0.1.0",
+    "description": "maths helper",
+    "author": "Bernat Martínez <bernatmv@gmail.com>",
+    "devDependencies": {
+        "webpack": "^2.4.1",
+        "webpack-dev-server": "2"
+    },
+    "scripts": {},
+    "dependencies": {}
+}
