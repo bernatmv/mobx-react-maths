@@ -8,4 +8,4 @@
 
 - **MaterialUI** for the UI components
 
-- **Styled** for the styling
+- **CSS Modules** for the styling
