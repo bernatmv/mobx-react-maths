@@ -1,11 +1,11 @@
 # mobx-react-maths
 
-- *Webpack 2* for the building process
+- **Webpack 2** for the building process
 
-- *MobX* for state management
+- **MobX** for state management
 
-- *React* for the view
+- **React** for the view
 
-- _???_ for the UI components
+- **MaterialUI** for the UI components
 
-- _???_ for the styling
+- **Styled** for the styling
