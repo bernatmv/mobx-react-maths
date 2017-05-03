@@ -1,9 +1,10 @@
 import React from 'react';
 import {observer} from 'mobx-react';
 import TodoView from './todoView';
+import {peopleStore} from '../store/peopleStore';
 
 @observer
-class TodoList extends React.Component {
+export default class TodoList extends React.Component {
   render() {
     const store = this.props.store;
     return (
@@ -17,6 +18,9 @@ class TodoList extends React.Component {
         { store.pendingRequests > 0 ? <marquee>Loading...</marquee> : null }
         <button onClick={ this.onNewTodo }>New Todo</button>
         <small> (double-click a todo to edit)</small>
+        <div>
+          <input onKeyUp={(event) => peopleStore[0].name = event.target.value} />
+        </div>
       </div>
     );
   }
@@ -25,4 +29,3 @@ class TodoList extends React.Component {
     this.props.store.addTodo(prompt('Enter a new todo:','coffee plz'));
   }
 }
-export default TodoList;

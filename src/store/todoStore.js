@@ -1,4 +1,5 @@
 import {observable, computed, autorun} from 'mobx';
+import {peopleStore} from './peopleStore';
 
 class ObservableTodoStore {
 	@observable todos = [];
@@ -25,7 +26,7 @@ class ObservableTodoStore {
 		this.todos.push({
 			task: task,
 			completed: false,
-            assignee: null
+            assignee: peopleStore[0]
 		});
 	}
 }

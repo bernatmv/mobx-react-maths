@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import DevTools from 'mobx-react-devtools';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TodoList from './view/todoList';
@@ -11,11 +12,11 @@ import {observableTodoStore} from './store/todoStore';
 // http://stackoverflow.com/a/34015469/988941 
 injectTapEventPlugin();
 
-
 ReactDOM.render(
     <MuiThemeProvider>
         <div className={styles.body}>
             <TodoList store={observableTodoStore} />
+            <DevTools />
         </div>
     </MuiThemeProvider>,
     document.getElementById('root')
