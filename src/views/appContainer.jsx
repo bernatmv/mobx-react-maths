@@ -8,7 +8,7 @@ export default class AppContainer extends React.Component {
     render() {
         return (
             <Tabs>
-                <Tab label={'Top Maths'}>
+                <Tab label={'Bottom Maths'}>
                     <BottomMath store={this.props.store.mathBottom} emitter={this.props.emitter} />
                 </Tab>
                 <Tab label={'Top Maths'}>

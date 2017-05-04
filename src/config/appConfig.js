@@ -5,9 +5,9 @@ export const appConfigBottom = {
         [1,2,3]
     ],
     paytable: {
-        '1': [1,2,3],
-        '2': [5,6,7],
-        '3': [10,100,100]
+        '1': [1],
+        '2': [5],
+        '3': [10]
     },
     wild: [],
     minigame: [],
