@@ -33,6 +33,7 @@
         "normalize.css": "^6.0.0",
         "react": "^15.5.4",
         "react-dom": "^15.5.4",
-        "react-tap-event-plugin": "^2.0.1"
+        "react-tap-event-plugin": "^2.0.1",
+        "rx": "^4.1.0"
     }
 }
