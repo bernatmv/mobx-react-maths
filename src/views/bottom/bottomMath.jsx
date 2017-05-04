@@ -5,16 +5,18 @@ import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import * as styles from '../appContainer.css';
 import SystemConstants from '../../common/constants/systemConstants';
+import EventConstants from '../../common/constants/eventConstants';
 
 @observer
 export default class BottomMath extends React.Component {
     calculateSpins = () => {
-        this.props.store.calculateAllSpins();
+        this.props.emitter.emit(EventConstants.CalculateAllSpins);
     };
 
     render() {
-        let spins = this.props.store.allSpins.map(spin => 
+        let spins = this.props.store.allSpins.map((spin, index) => 
                     <ListItem
+                        key={index}
                         primaryText={spin.positions[0] + ' - ' + spin.positions[1] + ' - ' + spin.positions[2]}
                         secondaryText={spin.figures[0] + ',' + spin.figures[1] + ',' + spin.figures[2] + ' => ' + spin.prize}
                     />);

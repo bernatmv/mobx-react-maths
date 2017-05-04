@@ -9,10 +9,10 @@ export default class AppContainer extends React.Component {
         return (
             <Tabs>
                 <Tab label={'Top Maths'}>
-                    <BottomMath store={this.props.store.mathBottom} />
+                    <BottomMath store={this.props.store.mathBottom} emitter={this.props.emitter} />
                 </Tab>
                 <Tab label={'Top Maths'}>
-                    <TopMath />
+                    <TopMath emitter={this.props.emitter} />
                 </Tab>
             </Tabs>
         );

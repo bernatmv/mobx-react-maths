@@ -5,7 +5,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import * as styles from './styles.css';
 
-import {mathStore} from './appContainer';
+import {mathStore, emitter} from './appContainer';
 import AppContainer from './views/appContainer';
 
 // Needed for onTouchTap 
@@ -15,7 +15,7 @@ injectTapEventPlugin();
 ReactDOM.render(
     <MuiThemeProvider>
         <div className={styles.body}>
-            <AppContainer store={mathStore} />
+            <AppContainer store={mathStore} emitter={emitter}/>
             <DevTools />
         </div>
     </MuiThemeProvider>,
