@@ -40,6 +40,13 @@ export default class MathStoreBottom {
                 }            
             }            
         }
+        this.printResult(this.allSpins.map(spin => {
+            return { positions: spin.positions.map(x => x) };
+        }));
+    }
+
+    printResult(result) {
+        console.log(result);
     }
 
     safeExecution(handler) {

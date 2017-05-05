@@ -1,11 +1,11 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import RaisedButton from 'material-ui/RaisedButton';
-import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
 import * as styles from '../appContainer.css';
 import SystemConstants from '../../common/constants/systemConstants';
 import EventConstants from '../../common/constants/eventConstants';
+import SpinBagCard from '../components/spinBagCard';
+
+let MAX_SPINS = 16*16*16;
 
 @observer
 export default class BottomMath extends React.Component {
@@ -14,25 +14,16 @@ export default class BottomMath extends React.Component {
     };
 
     render() {
-        let spins = this.props.store.allSpins.map((spin, index) => 
-                    <ListItem
-                        key={index}
-                        primaryText={spin.positions[0] + ' - ' + spin.positions[1] + ' - ' + spin.positions[2]}
-                        secondaryText={spin.figures[0] + ',' + spin.figures[1] + ',' + spin.figures[2] + ' => ' + spin.prize}
-                    />);
-        let calculateButton = !this.props.store.isProcessing 
-                    ? <RaisedButton label="Calculate" onTouchTap={this.calculateSpins} />
-                    : <div>Calculating...</div>;
-
+        let progress = Math.ceil((this.props.store.allSpins.length / MAX_SPINS) * 100);
         return (
             <div className={styles.container}>
-                <h2 className={styles.headline}>Calculate all spins</h2>
-                {calculateButton}
-                
-                <List>
-                    <Subheader>Calculate all spins</Subheader>
-                    {spins}
-                </List>
+                <SpinBagCard
+                    title={'Calculate all spins'}
+                    subtitle={'Full permutation'}
+                    action={this.calculateSpins}
+                    spins={this.props.store.allSpins.length}
+                    progress={progress}
+                    />
             </div>
         );
     }
