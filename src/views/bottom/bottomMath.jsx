@@ -13,6 +13,14 @@ export default class BottomMath extends React.Component {
         this.props.emitter.emit(EventConstants.CalculateAllSpins);
     };
 
+    calculatePrizesCH = () => {
+        this.props.emitter.emit(EventConstants.CalculatePrizesCH);
+    };
+
+    calculateAvancesCH = () => {
+        this.props.emitter.emit(EventConstants.CalculateAvancesCH);
+    };
+
     render() {
         let progress = Math.ceil((this.props.store.allSpins.count / MAX_SPINS) * 100);
         return (
@@ -32,8 +40,34 @@ export default class BottomMath extends React.Component {
                     />
 
                 <SpinBagCard
-                    title={'Avances CH'}
+                    title={'Premios CH'}
+                    action={this.calculatePrizesCH} 
+                    spins={this.props.store.prizes_CH.length} 
+                    isProcessing={this.props.store.isProcessing}
+                    />
+                    {/*
+                        Calcula premios (crea un array de ID/ref sobre el allSpins)
+                        Que mostri tres figures o amb wild, eliminar casos lletjos (jackpots just a sobre o sota, etc)
+                        Mostrar % vàlids (acceptats i eliminats per lletjos)
+                    */}
+
+                <SpinBagCard
+                    title={'Sin Premio'}
                     action={() => {}} 
+                    spins={0} 
+                    isProcessing={this.props.store.isProcessing}
+                    />
+                    {/*
+                        Calcula sin premios (crea un array de ID/ref sobre el allSpins)
+                        Eliminar casos lletjos (jackpots just a sobre o sota, etc)
+                        Mostrar % vàlids (acceptats i eliminats per lletjos)
+                    */}
+
+                {/* RESTA PREMIS */}
+
+                <SpinBagCard
+                    title={'Avances CH'}
+                    action={this.calculateAvancesCH} 
                     spins={0}
                     progress={0}
                     isProcessing={this.props.store.isProcessing}
@@ -60,32 +94,6 @@ export default class BottomMath extends React.Component {
                     */}
 
                 {/* RESTA RETENCIONES */}
-
-                <SpinBagCard
-                    title={'Premios CH'}
-                    action={() => {}} 
-                    spins={0} 
-                    isProcessing={this.props.store.isProcessing}
-                    />
-                    {/*
-                        Calcula premios (crea un array de ID/ref sobre el allSpins)
-                        Que mostri tres figures o amb wild, eliminar casos lletjos (jackpots just a sobre o sota, etc)
-                        Mostrar % vàlids (acceptats i eliminats per lletjos)
-                    */}
-
-                <SpinBagCard
-                    title={'Sin Premio'}
-                    action={() => {}} 
-                    spins={0} 
-                    isProcessing={this.props.store.isProcessing}
-                    />
-                    {/*
-                        Calcula sin premios (crea un array de ID/ref sobre el allSpins)
-                        Eliminar casos lletjos (jackpots just a sobre o sota, etc)
-                        Mostrar % vàlids (acceptats i eliminats per lletjos)
-                    */}
-
-                {/* RESTA PREMIS */}
 
                 <SpinBagCard
                     title={'Bonos'}

@@ -11,7 +11,10 @@ export default class MathStoreBottom {
     // LOCK
     @observable isProcessing = false;
     // ALL SPINS
-    @observable allSpins = { count: 0 };
+    @observable allSpins = { 
+        refs: [],
+        count: 0 
+    };
     // CH
     @observable prizes_CH = [];
     @observable prizes_CH_discarded = [];
@@ -29,6 +32,7 @@ export default class MathStoreBottom {
     constructor(emitter) {
         this.emitter = emitter;
         this.emitter.addListener(EventConstants.CalculateAllSpins, () => this.calculateAllSpins());
+        this.emitter.addListener(EventConstants.CalculatePrizesCH, () => this.calculatePrizesCH());
         this.emitter.addListener(EventConstants.CalculateAvancesCH, () => this.calculateAvancesCH());
     }
 
@@ -42,19 +46,22 @@ export default class MathStoreBottom {
         let lengthR1 = this.config.reels[0].length;
         let lengthR2 = this.config.reels[1].length;
         let lengthR3 = this.config.reels[2].length;
+        let spin;
 
         for (let x = 0; x < lengthR1; x++) {
             for (let y = 0; y < lengthR2; y++) {
                 for (let z = 0; z < lengthR3; z++) {
-                    this.allSpins[this.getId(x,y,z)] = {
+                    spin = {
                         positions: [x, y, z], 
                         figures: [
                             this.config.reels[0][x], 
                             this.config.reels[1][y], 
                             this.config.reels[2][z]
                         ],
-                        prize: this.calculatePrize(this.config.reels[0][x], this.config.reels[1][y], this.config.reels[2][z])
+                        prize: this.calculatePrize([this.config.reels[0][x], this.config.reels[1][y], this.config.reels[2][z]])
                     };
+                    this.allSpins[this.getId(x,y,z)] = spin;
+                    this.allSpins.refs.push(spin)
                     this.allSpins.count++;
                 }            
             }            
@@ -66,9 +73,9 @@ export default class MathStoreBottom {
 
     calculatePrizesCH() {
         this.safeExecution(() => {
-            this.allSpins
+            this.allSpins.refs
                 .filter(spin => (spin.prize && spin.prize.figure === Figures.CH))
-                .forEach(spin => {
+                .map(spin => {
                     if (this.isBeautiful(spin)) {
                         this.prizes_CH.push(spin);
                     } else {
