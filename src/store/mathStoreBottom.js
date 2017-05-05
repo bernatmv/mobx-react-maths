@@ -62,6 +62,24 @@ export default class MathStoreBottom {
         this.printResult(this.allSpins);
     }
 
+    // PRIZES
+
+    calculatePrizesCH() {
+        this.safeExecution(() => {
+            this.allSpins
+                .filter(spin => (spin.prize && spin.prize.figure === Figures.CH))
+                .forEach(spin => {
+                    if (this.isBeautiful(spin)) {
+                        this.prizes_CH.push(spin);
+                    } else {
+                        this.prizes_CH_discarded.push(spin);
+                    }
+                });
+            this.printResult(this.prizes_CH);
+            this.printResult(this.prizes_CH_discarded);
+        });
+    }
+
     // AVANCES
     /*
         Calcula avances (crea un array de ID/ref sobre el allSpins)
@@ -70,16 +88,26 @@ export default class MathStoreBottom {
         Mostrar % vàlids (acceptats i eliminats per lletjos)
     */
 
-
     calculateAvancesCH() {
         this.safeExecution(() => {
             this.calculateAvancesProcess(this.prizes_CH, Figures.CH, 1, this.avances_CH_1, this.avances_CH_1_discarded);
             this.calculateAvancesProcess(this.prizes_CH, Figures.CH, 2, this.avances_CH_2, this.avances_CH_2_discarded);
             this.calculateAvancesProcess(this.prizes_CH, Figures.CH, 3, this.avances_CH_3, this.avances_CH_3_discarded);
             this.calculateAvancesProcess(this.prizes_CH, Figures.CH, 4, this.avances_CH_4, this.avances_CH_4_discarded);
+            this.printResult(this.avances_CH_1);
+            this.printResult(this.avances_CH_1_discarded);
+            this.printResult(this.avances_CH_2);
+            this.printResult(this.avances_CH_2_discarded);
+            this.printResult(this.avances_CH_3);
+            this.printResult(this.avances_CH_3_discarded);
+            this.printResult(this.avances_CH_4);
+            this.printResult(this.avances_CH_4_discarded);
         });
     }
 
+    /**
+     * Sí, la complejidad ciclomátia de esta función es una mierda... si esto fuera medio serio habría que refactorizarlo
+     */
     calculateAvancesProcess(spins, figure, avances, approved, discarded) {
         // from all prized spins
             // 1 ->
@@ -171,16 +199,27 @@ export default class MathStoreBottom {
     calculatePrize(figures) {
         // Minigame
         if (figures.filter(fig => fig === this.config.minigame).length === 3) {
-            return { type: SystemConstants.Minigame };
+            return { 
+                type: SystemConstants.Minigame, 
+                figure: this.config.minigame
+            };
         }
         // Line prize
         if (figures[0] === figures[1] && figures[0] === figures[2]) {
-            return { type: SystemConstants.Coins, value: this.config.paytable[figures[0]][0] };
+            return { 
+                type: SystemConstants.Coins, 
+                value: this.config.paytable[figures[0]][0],
+                figure: figures[0]
+            };
         }
         // Bonos
         let bonos = figures.filter(fig => fig === this.config.bonos).length;
         if (bonos > 0) {
-            return { type: SystemConstants.Bonos, value: this.config.paytable[this.config.bonos][bonos - 1] };
+            return { 
+                type: SystemConstants.Bonos, 
+                value: this.config.paytable[this.config.bonos][bonos - 1], 
+                figure: this.config.bonos
+            };
         }
         // No prize
         return null;
