@@ -14,16 +14,104 @@ export default class BottomMath extends React.Component {
     };
 
     render() {
-        let progress = Math.ceil((this.props.store.allSpins.length / MAX_SPINS) * 100);
+        let progress = Math.ceil((this.props.store.allSpins.count / MAX_SPINS) * 100);
         return (
             <div className={styles.container}>
+
+                {/* ADD GLOBAL PROGRESSION AND GLOBAL BUTTON */}
+
+                {/* REMOVE BUTTON WHEN EACH PROGRESSION IS DONE */}
+
                 <SpinBagCard
                     title={'Calculate all spins'}
                     subtitle={'Full permutation'}
                     action={this.calculateSpins}
-                    spins={this.props.store.allSpins.length}
+                    spins={this.props.store.allSpins.count}
                     progress={progress}
+                    isProcessing={this.props.store.isProcessing}
                     />
+
+                <SpinBagCard
+                    title={'Avances CH'}
+                    action={() => {}} 
+                    spins={0}
+                    progress={0}
+                    isProcessing={this.props.store.isProcessing}
+                    />
+                    {/*
+                        Calcula avances (crea un array de ID/ref sobre el allSpins)
+                        Que compleixin premi de CH amb aquests avances en cualsevol combinació de reels sense que per mig hi hagi premi igual o més gran, eliminar casos lletjos
+                        4: 1-4 avances
+                        Mostrar % vàlids (acceptats i eliminats per lletjos)
+                    */}
+
+                {/* RESTA AVANCES */}
+
+                <SpinBagCard
+                    title={'Retenciones CH'}
+                    action={() => {}}
+                    spins={0}
+                    isProcessing={this.props.store.isProcessing}
+                    />
+                    {/*
+                        Calcula retenciones (crea un array de ID/ref sobre el allSpins)
+                        Que mostri dos figures o una més wild, eliminar casos lletjos (jackpots just a sobre o sota, etc)
+                        Mostrar % vàlids (acceptats i eliminats per lletjos)
+                    */}
+
+                {/* RESTA RETENCIONES */}
+
+                <SpinBagCard
+                    title={'Premios CH'}
+                    action={() => {}} 
+                    spins={0} 
+                    isProcessing={this.props.store.isProcessing}
+                    />
+                    {/*
+                        Calcula premios (crea un array de ID/ref sobre el allSpins)
+                        Que mostri tres figures o amb wild, eliminar casos lletjos (jackpots just a sobre o sota, etc)
+                        Mostrar % vàlids (acceptats i eliminats per lletjos)
+                    */}
+
+                <SpinBagCard
+                    title={'Sin Premio'}
+                    action={() => {}} 
+                    spins={0} 
+                    isProcessing={this.props.store.isProcessing}
+                    />
+                    {/*
+                        Calcula sin premios (crea un array de ID/ref sobre el allSpins)
+                        Eliminar casos lletjos (jackpots just a sobre o sota, etc)
+                        Mostrar % vàlids (acceptats i eliminats per lletjos)
+                    */}
+
+                {/* RESTA PREMIS */}
+
+                <SpinBagCard
+                    title={'Bonos'}
+                    action={() => {}} 
+                    spins={0} 
+                    progress={0} 
+                    isProcessing={this.props.store.isProcessing}
+                    />
+                    {/*
+                        Calcula bonos (crea un array de ID/ref sobre el allSpins)
+                        Que mostri de 1 a 3 figuras (o 1 + wild/s), eliminar casos lletjos (jackpots just a sobre o sota, etc)
+                        3: 1-3 scatter
+                        Mostrar % vàlids (acceptats i eliminats per lletjos)
+                    */}
+
+                <SpinBagCard
+                    title={'Minijuego'}
+                    action={() => {}} 
+                    spins={0} 
+                    isProcessing={this.props.store.isProcessing}
+                    />
+                    {/*
+                        Calcula minijuegos (crea un array de ID/ref sobre el allSpins)
+                        Que mostri 3 figuras (no afecta wild), eliminar casos lletjos (jackpots just a sobre o sota, etc)
+                        Mostrar % vàlids (acceptats i eliminats per lletjos)
+                    */}
             </div>
         );
     }

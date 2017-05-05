@@ -5,9 +5,11 @@ import LinearProgress from 'material-ui/LinearProgress';
 
 export default class SpinBagCard extends React.Component {
     render() {
-        let calculateButton = !this.props.isProcessing 
-                    ? <FlatButton label="Calculate" onTouchTap={this.props.action} />
-                    : <div>Busy...</div>;
+        let calculateButton = !this.props.isProcessing && this.props.spins === 0
+                    ? <CardActions>
+                        <FlatButton label="Calculate" onTouchTap={this.props.action} />
+                    </CardActions>
+                    : null;
         let progress = this.props.progress 
                     ? <div>
                         <div>Progress: {this.props.progress}%</div>
@@ -20,9 +22,7 @@ export default class SpinBagCard extends React.Component {
                     title={this.props.title}
                     subtitle={this.props.subtitle}
                     />
-                <CardActions>
-                    {calculateButton}
-                </CardActions>
+                {calculateButton}
                 <CardText>
                     <div>Spins: {this.props.spins}</div>
                     {progress}

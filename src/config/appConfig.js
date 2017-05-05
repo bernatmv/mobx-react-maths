@@ -15,6 +15,22 @@ const SU = 10;
 const SH = 11;
 const QB = 12;
 
+export const Figures = {
+    NA: NA,
+    CH: CH,
+    OR: OR,
+    PL: PL,
+    PE: PE,
+    ST: ST,
+    ME: ME,
+    G7: G7,
+    R7: R7,
+    B7: B7,
+    SU: SU,
+    SH: SH,
+    QB: QB,
+};
+
 // BOTTOM
 
 export const appConfigBottom = {
@@ -85,13 +101,12 @@ export const appConfigBottom = {
         [50],
         [100],
         [500],
-        [],
+        [22],
         [1,2,6],
         []
     ],
-    wild: [],
-    minigame: [SU],
-    bonos: [SH]
+    minigame: SU,
+    bonos: SH
 };
 
 // TOP
