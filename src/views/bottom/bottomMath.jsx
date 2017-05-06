@@ -21,7 +21,12 @@ export default class BottomMath extends React.Component {
         this.props.emitter.emit(EventConstants.CalculateAvancesCH);
     };
 
+    calculateRetencionesCH = () => {
+        this.props.emitter.emit(EventConstants.CalculateRetencionesCH);
+    };
+
     render() {
+        let store = this.props.store;
         let progress = Math.ceil((this.props.store.allSpins.count / MAX_SPINS) * 100);
         return (
             <div className={styles.container}>
@@ -68,7 +73,7 @@ export default class BottomMath extends React.Component {
                 <SpinBagCard
                     title={'Avances CH'}
                     action={this.calculateAvancesCH} 
-                    spins={0}
+                    spins={(this.props.store.avances_CH_1.length + this.props.store.avances_CH_2.length + this.props.store.avances_CH_3.length + this.props.store.avances_CH_4.length)}
                     progress={0}
                     isProcessing={this.props.store.isProcessing}
                     />
@@ -83,8 +88,8 @@ export default class BottomMath extends React.Component {
 
                 <SpinBagCard
                     title={'Retenciones CH'}
-                    action={() => {}}
-                    spins={0}
+                    action={this.calculateRetencionesCH}
+                    spins={this.props.store.retenciones_CH.length}
                     isProcessing={this.props.store.isProcessing}
                     />
                     {/*

@@ -34,6 +34,7 @@ export default class MathStoreBottom {
         this.emitter.addListener(EventConstants.CalculateAllSpins, () => this.calculateAllSpins());
         this.emitter.addListener(EventConstants.CalculatePrizesCH, () => this.calculatePrizesCH());
         this.emitter.addListener(EventConstants.CalculateAvancesCH, () => this.calculateAvancesCH());
+        this.emitter.addListener(EventConstants.CalculateRetencionesCH, () => this.calculateRetencionesCH());
     }
 
     // ALL SPINS
@@ -82,8 +83,7 @@ export default class MathStoreBottom {
                         this.prizes_CH_discarded.push(spin);
                     }
                 });
-            this.printResult(this.prizes_CH);
-            this.printResult(this.prizes_CH_discarded);
+            this.printRawArrays('PRIZES CH', [this.prizes_CH, this.prizes_CH_discarded]);
         });
     }
 
@@ -101,14 +101,19 @@ export default class MathStoreBottom {
             this.calculateAvancesProcess(this.prizes_CH, Figures.CH, 2, this.avances_CH_2, this.avances_CH_2_discarded);
             this.calculateAvancesProcess(this.prizes_CH, Figures.CH, 3, this.avances_CH_3, this.avances_CH_3_discarded);
             this.calculateAvancesProcess(this.prizes_CH, Figures.CH, 4, this.avances_CH_4, this.avances_CH_4_discarded);
-            this.printResult(this.avances_CH_1);
-            this.printResult(this.avances_CH_1_discarded);
-            this.printResult(this.avances_CH_2);
-            this.printResult(this.avances_CH_2_discarded);
-            this.printResult(this.avances_CH_3);
-            this.printResult(this.avances_CH_3_discarded);
-            this.printResult(this.avances_CH_4);
-            this.printResult(this.avances_CH_4_discarded);
+            this.printRawArrays(
+                'AVANCES CH',
+                [
+                    this.avances_CH_1,
+                    this.avances_CH_1_discarded,
+                    this.avances_CH_2,
+                    this.avances_CH_2_discarded,
+                    this.avances_CH_3,
+                    this.avances_CH_3_discarded,
+                    this.avances_CH_4,
+                    this.avances_CH_4_discarded,
+                ]
+            );
         });
     }
 
@@ -162,6 +167,27 @@ export default class MathStoreBottom {
                 }
             }
         });
+    }
+
+    // RETENCIONES
+
+    calculateRetencionesCH() {
+        this.safeExecution(() => {
+            this.calculateRetencionesProcess(Figures.CH, this.retenciones_CH, this.retenciones_CH_discarded);
+        });
+        this.printRawArrays('RETENCIONES CH', [this.retenciones_CH, this.retenciones_CH_discarded]);
+    }
+
+    calculateRetencionesProcess(figure, approved, discarded) {
+        this.allSpins.refs
+            .filter(spin => spin.figures.filter(fig => fig === figure).length === 2)
+            .map(spin => {
+                if (this.isBeautiful(spin)) {
+                    approved.push(spin);
+                } else {
+                    discarded.push(spin);
+                }
+            });
     }
 
     // COMMON
@@ -230,6 +256,13 @@ export default class MathStoreBottom {
         }
         // No prize
         return null;
+    }
+
+    printRawArrays(title, results) {
+        console.log('===== ' + title + ' =====');
+        results.forEach(result => {
+            console.log(result.map(x => x));
+        });
     }
 
     printResult(result) {
