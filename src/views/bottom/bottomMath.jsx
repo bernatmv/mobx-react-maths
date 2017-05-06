@@ -13,6 +13,10 @@ export default class BottomMath extends React.Component {
         this.props.emitter.emit(EventConstants.CalculateAllSpins);
     };
 
+    calculateNoPrize = () => {
+        this.props.emitter.emit(EventConstants.CalculateNoPrize);
+    };
+
     calculatePrizesCH = () => {
         this.props.emitter.emit(EventConstants.CalculatePrizesCH);
     };
@@ -58,8 +62,8 @@ export default class BottomMath extends React.Component {
 
                 <SpinBagCard
                     title={'Sin Premio'}
-                    action={() => {}} 
-                    spins={0} 
+                    action={this.calculateNoPrize} 
+                    spins={store.no_prize.length} 
                     isProcessing={this.props.store.isProcessing}
                     />
                     {/*

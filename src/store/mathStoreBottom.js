@@ -15,6 +15,9 @@ export default class MathStoreBottom {
         refs: [],
         count: 0 
     };
+    // No prize
+    @observable no_prize = [];
+    @observable no_prize_discarded = [];
     // CH
     @observable prizes_CH = [];
     @observable prizes_CH_discarded = [];
@@ -32,6 +35,7 @@ export default class MathStoreBottom {
     constructor(emitter) {
         this.emitter = emitter;
         this.emitter.addListener(EventConstants.CalculateAllSpins, () => this.calculateAllSpins());
+        this.emitter.addListener(EventConstants.CalculateNoPrize, () => this.calculateNoPrize());
         this.emitter.addListener(EventConstants.CalculatePrizesCH, () => this.calculatePrizesCH());
         this.emitter.addListener(EventConstants.CalculateAvancesCH, () => this.calculateAvancesCH());
         this.emitter.addListener(EventConstants.CalculateRetencionesCH, () => this.calculateRetencionesCH());
@@ -72,8 +76,24 @@ export default class MathStoreBottom {
 
     // PRIZES
 
+    calculateNoPrize() {
+        this.safeExecution(() => {
+            this.allSpins.refs
+                .filter(spin => !spin.prize)
+                .map(spin => {
+                    if (this.isBeautiful(spin)) {
+                        this.no_prize.push(spin);
+                    } else {
+                        this.no_prize_discarded.push(spin);
+                    }
+                });
+            this.printRawArrays('NO PRIZE', [this.no_prize, this.no_prize_discarded]);
+        });
+    }
+
     calculatePrizesCH() {
         this.safeExecution(() => {
+            this.calculatePrizesProcess(Figures.CH, this.prizes_CH, this.prizes_CH_discarded);
             this.allSpins.refs
                 .filter(spin => (spin.prize && spin.prize.figure === Figures.CH))
                 .map(spin => {
@@ -85,6 +105,18 @@ export default class MathStoreBottom {
                 });
             this.printRawArrays('PRIZES CH', [this.prizes_CH, this.prizes_CH_discarded]);
         });
+    }
+
+    calculatePrizesProcess(figure, approved, discarded) {
+        this.allSpins.refs
+            .filter(spin => (spin.prize && spin.prize.figure === figure))
+            .map(spin => {
+                if (this.isBeautiful(spin)) {
+                    approved.push(spin);
+                } else {
+                    discarded.push(spin);
+                }
+            });
     }
 
     // AVANCES
