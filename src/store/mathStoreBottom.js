@@ -27,10 +27,10 @@ export default class MathStoreBottom {
     };
     advancements = {
         approved: [
-            [],[],[],[],[],[],[],[],[],[],[],[]
+            [[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]]
         ],
         discarded: [
-            [],[],[],[],[],[],[],[],[],[],[],[]
+            [[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]]
         ]
     };
     retentions = {
@@ -103,23 +103,19 @@ export default class MathStoreBottom {
     }
 
     calculateNoPrize(approved, discarded) {
-        this.safeExecution(() => {
-            this.allSpins.refs
-                .filter(spin => !spin.prize)
-                .map(spin => {
-                    if (this.isBeautiful(spin)) {
-                        approved.push(spin);
-                    } else {
-                        discarded.push(spin);
-                    }
-                });
-            this.printRawArrays('NO PRIZE', [approved, discarded]);
-        });
+        this.allSpins.refs
+            .filter(spin => !spin.prize)
+            .map(spin => {
+                if (this.isBeautiful(spin)) {
+                    approved.push(spin);
+                } else {
+                    discarded.push(spin);
+                }
+            });
+        this.printRawArrays('NO PRIZE', [approved, discarded]);
     }
 
     calculatePrizesProcess(figure, approved, discarded) {
-        approved = [];
-        discarded = [];
         this.allSpins.refs
             .filter(spin => (spin.prize && spin.prize.figure === figure))
             .map(spin => {
@@ -136,28 +132,26 @@ export default class MathStoreBottom {
 
     calculateAvances() {
         this.safeExecution(() => {
-            this.calculateAvancesByFigure(Figure.NO_PRIZE);
-            this.calculateAvancesByFigure(Figure.CH);
-            this.calculateAvancesByFigure(Figure.OR);
-            this.calculateAvancesByFigure(Figure.PL);
-            this.calculateAvancesByFigure(Figure.PE);
-            this.calculateAvancesByFigure(Figure.ST);
-            this.calculateAvancesByFigure(Figure.ME);
-            this.calculateAvancesByFigure(Figure.G7);
-            this.calculateAvancesByFigure(Figure.R7);
-            this.calculateAvancesByFigure(Figure.B7);
+            this.calculateAvancesByFigure(Figures.NO_PRIZE);
+            this.calculateAvancesByFigure(Figures.CH);
+            this.calculateAvancesByFigure(Figures.OR);
+            this.calculateAvancesByFigure(Figures.PL);
+            this.calculateAvancesByFigure(Figures.PE);
+            this.calculateAvancesByFigure(Figures.ST);
+            this.calculateAvancesByFigure(Figures.ME);
+            this.calculateAvancesByFigure(Figures.G7);
+            this.calculateAvancesByFigure(Figures.R7);
+            this.calculateAvancesByFigure(Figures.B7);
         });
     }
 
     calculateAvancesByFigure(figure) {
-        this.advancements.approved[figure] = [];
-        this.advancements.discarded[figure] = [];
         let approved = this.advancements.approved[figure];
         let discarded = this.advancements.discarded[figure];
-        this.calculateAvancesProcess(this.prizes.approved[figure], 1, approved[figure][0], discarded[figure][0]);
-        this.calculateAvancesProcess(this.prizes.approved[figure], 2, approved[figure][1], discarded[figure][1]);
-        this.calculateAvancesProcess(this.prizes.approved[figure], 3, approved[figure][2], discarded[figure][2]);
-        this.calculateAvancesProcess(this.prizes.approved[figure], 4, approved[figure][3], discarded[figure][3]);
+        this.calculateAvancesProcess(this.prizes.approved[figure], 1, approved[0], discarded[0]);
+        this.calculateAvancesProcess(this.prizes.approved[figure], 2, approved[1], discarded[1]);
+        this.calculateAvancesProcess(this.prizes.approved[figure], 3, approved[2], discarded[2]);
+        this.calculateAvancesProcess(this.prizes.approved[figure], 4, approved[3], discarded[3]);
         this.printRawArrays('AVANCES ' + figure, [...approved, ...discarded]);
     }
 
