@@ -19,18 +19,44 @@ export default class MathStoreBottom {
     };
     prizes = {
         approved: [
-            [],[],[],[],[],[],[],[],[],[],[],[]
+            [],[],[],[],[],[],[],[],[],[],[],[],[]
         ],
         discarded: [
-            [],[],[],[],[],[],[],[],[],[],[],[]
+            [],[],[],[],[],[],[],[],[],[],[],[],[]
         ]
     };
     advancements = {
         approved: [
-            [[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]]
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]]
         ],
         discarded: [
-            [[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]],[[],[],[],[]]
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]],
+            [[],[],[],[]]
         ]
     };
     retentions = {
@@ -48,6 +74,7 @@ export default class MathStoreBottom {
         this.emitter.addListener(EventConstants.CalculatePrizes, () => this.calculatePrizes());
         this.emitter.addListener(EventConstants.CalculateAvances, () => this.calculateAvances());
         this.emitter.addListener(EventConstants.CalculateRetenciones, () => this.calculateRetenciones());
+        this.emitter.addListener(EventConstants.CalculateBonos, () => this.calculateBonos());
     }
 
     // ALL SPINS
@@ -236,6 +263,31 @@ export default class MathStoreBottom {
                 }
             });
         this.printRawArrays('RETENCIONES ' + figure, [approved, discarded]);
+    }
+
+    // BONOS
+
+    calculateBonos() {
+        this.safeExecution(() => {
+            let approved = this.prizes.approved;
+            let discarded = this.prizes.discarded;
+            this.calculateBonosProcess(Figures.SH, 1, approved[Figures.SH_x1], discarded[Figures.SH_x1]);
+            this.calculateBonosProcess(Figures.SH, 2, approved[Figures.SH_x2], discarded[Figures.SH_x2]);
+            this.calculateBonosProcess(Figures.SH, 3, approved[Figures.SH_x3], discarded[Figures.SH_x3]);
+        });
+    }
+
+    calculateBonosProcess(figure, numBonos, approved, discarded) {
+        this.allSpins.refs
+            .filter(spin => spin.figures.filter(fig => fig === figure).length === numBonos)
+            .map(spin => {
+                if (this.isBeautiful(spin)) {
+                    approved.push(spin);
+                } else {
+                    discarded.push(spin);
+                }
+            });
+        this.printRawArrays('BONOS x' + numBonos, [approved, discarded]);
     }
 
     // COMMON

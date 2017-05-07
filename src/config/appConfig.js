@@ -11,9 +11,12 @@ const ME = 6;
 const G7 = 7;
 const R7 = 8;
 const B7 = 9;
-const SU = 10;
-const SH = 11;
-const QB = 12;
+const SH_x1 = 10;
+const SH_x2 = 11;
+const SH_x3 = 12;
+const SU = 13;
+const SH = 14;
+const QB = 15;
 
 export const Figures = {
     NO_PRIZE: NO_PRIZE,
@@ -26,6 +29,9 @@ export const Figures = {
     G7: G7,
     R7: R7,
     B7: B7,
+    SH_x1: SH_x1,
+    SH_x2: SH_x2,
+    SH_x3: SH_x3,
     SU: SU,
     SH: SH,
     QB: QB,
@@ -91,7 +97,7 @@ export const appConfigBottom = {
         ]
     ],
     paytable: [
-        [],
+        [0],
         [2],
         [4],
         [8],
@@ -101,9 +107,11 @@ export const appConfigBottom = {
         [50],
         [100],
         [500],
+        [1],
+        [2],
+        [6],
         [22],
-        [1,2,6],
-        []
+        [1,2,6]
     ],
     minigame: SU,
     bonos: SH

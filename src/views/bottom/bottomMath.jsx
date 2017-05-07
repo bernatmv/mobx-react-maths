@@ -25,6 +25,14 @@ export default class BottomMath extends React.Component {
         this.props.emitter.emit(EventConstants.CalculateRetenciones);
     };
 
+    calculateBonos = () => {
+        this.props.emitter.emit(EventConstants.CalculateBonos);
+    };
+
+    calculateMinigames = () => {
+        this.props.emitter.emit(EventConstants.CalculateMinigames);
+    };
+
     render() {
         let store = this.props.store;
         let progress = Math.ceil((this.props.store.allSpins.count / MAX_SPINS) * 100);
@@ -51,7 +59,19 @@ export default class BottomMath extends React.Component {
                     isProcessing={this.props.store.isProcessing}
                     />
 
-                {/* RESTA PREMIS */}
+                <SpinBagCard
+                    title={'Bonos'}
+                    action={this.calculateBonos} 
+                    spins={0} 
+                    isProcessing={this.props.store.isProcessing}
+                    />
+
+                <SpinBagCard
+                    title={'Minijuegos'}
+                    action={this.calculateMinigames} 
+                    spins={0} 
+                    isProcessing={this.props.store.isProcessing}
+                    />
 
                 <SpinBagCard
                     title={'Avances'}
@@ -61,29 +81,10 @@ export default class BottomMath extends React.Component {
                     isProcessing={this.props.store.isProcessing}
                     />
 
-                {/* RESTA AVANCES */}
-
                 <SpinBagCard
                     title={'Retenciones'}
                     action={this.calculateRetenciones}
                     spins={0}
-                    isProcessing={this.props.store.isProcessing}
-                    />
-
-                {/* RESTA RETENCIONES */}
-
-                <SpinBagCard
-                    title={'Bonos'}
-                    action={() => {}} 
-                    spins={0} 
-                    progress={0} 
-                    isProcessing={this.props.store.isProcessing}
-                    />
-
-                <SpinBagCard
-                    title={'Minijuego'}
-                    action={() => {}} 
-                    spins={0} 
                     isProcessing={this.props.store.isProcessing}
                     />
             </div>
