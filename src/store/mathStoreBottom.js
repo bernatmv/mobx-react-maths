@@ -171,13 +171,13 @@ export default class MathStoreBottom {
             for (let x = 0; x <= avances; x++) {
                 currentStep1 = this.repeatRollBackReel(SystemConstants.Reel_1, spin, x);
                 if (x === 0 || !this.havePrize(currentStep1)) {
-                    for (let y = 0; y < (avances - x); y++) {
+                    for (let y = 0; y <= (avances - x); y++) {
                         currentStep2 = this.repeatRollBackReel(SystemConstants.Reel_2, currentStep1, y);
                         if (y === 0 || !this.havePrize(currentStep2)) {
-                            for (let z = 0; z < (avances - x - y); z++) {
+                            for (let z = 0; z <= (avances - x - y); z++) {
                                 currentStep3 = this.repeatRollBackReel(SystemConstants.Reel_3, currentStep2, z);
                                 if ((avances - x - y - z) === 0) {
-                                    if (this.havePrize(currentStep3)) {
+                                    if (!this.havePrize(currentStep3)) {
                                         if (this.isBeautiful(currentStep3)) {
                                             approved.push(currentStep3);
                                         } else {
