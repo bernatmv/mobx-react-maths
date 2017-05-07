@@ -19,10 +19,10 @@ export default class MathStoreBottom {
     };
     prizes = {
         approved: [
-            [],[],[],[],[],[],[],[],[],[],[],[],[]
+            [],[],[],[],[],[],[],[],[],[],[],[],[],[]
         ],
         discarded: [
-            [],[],[],[],[],[],[],[],[],[],[],[],[]
+            [],[],[],[],[],[],[],[],[],[],[],[],[],[]
         ]
     };
     advancements = {
@@ -40,9 +40,11 @@ export default class MathStoreBottom {
             [[],[],[],[]],
             [[],[],[],[]],
             [[],[],[],[]],
+            [[],[],[],[]],
             [[],[],[],[]]
         ],
         discarded: [
+            [[],[],[],[]],
             [[],[],[],[]],
             [[],[],[],[]],
             [[],[],[],[]],
@@ -61,10 +63,10 @@ export default class MathStoreBottom {
     };
     retentions = {
         approved: [
-            [],[],[],[],[],[],[],[],[],[],[],[]
+            [],[],[],[],[],[],[],[],[],[],[],[],[],[]
         ],
         discarded: [
-            [],[],[],[],[],[],[],[],[],[],[],[]
+            [],[],[],[],[],[],[],[],[],[],[],[],[],[]
         ]
     };
 
@@ -75,6 +77,7 @@ export default class MathStoreBottom {
         this.emitter.addListener(EventConstants.CalculateAvances, () => this.calculateAvances());
         this.emitter.addListener(EventConstants.CalculateRetenciones, () => this.calculateRetenciones());
         this.emitter.addListener(EventConstants.CalculateBonos, () => this.calculateBonos());
+        this.emitter.addListener(EventConstants.CalculateMinigames, () => this.calculateMinigames());
     }
 
     // ALL SPINS
@@ -169,6 +172,10 @@ export default class MathStoreBottom {
             this.calculateAvancesByFigure(Figures.G7);
             this.calculateAvancesByFigure(Figures.R7);
             this.calculateAvancesByFigure(Figures.B7);
+            this.calculateAvancesByFigure(Figures.SH_x1);
+            this.calculateAvancesByFigure(Figures.SH_x2);
+            this.calculateAvancesByFigure(Figures.SH_x3);
+            this.calculateAvancesByFigure(Figures.SU);
         });
     }
 
@@ -249,6 +256,7 @@ export default class MathStoreBottom {
             this.calculateRetencionesProcess(Figures.G7, approved[Figures.G7], discarded[Figures.G7]);
             this.calculateRetencionesProcess(Figures.R7, approved[Figures.R7], discarded[Figures.R7]);
             this.calculateRetencionesProcess(Figures.B7, approved[Figures.B7], discarded[Figures.B7]);
+            this.calculateRetencionesProcess(Figures.SU, approved[Figures.SU], discarded[Figures.SU]);
         });
     }
 
@@ -288,6 +296,29 @@ export default class MathStoreBottom {
                 }
             });
         this.printRawArrays('BONOS x' + numBonos, [approved, discarded]);
+    }
+
+    // MINIGAMES
+
+    calculateMinigames() {
+        this.safeExecution(() => {
+            let approved = this.prizes.approved;
+            let discarded = this.prizes.discarded;
+            this.calculateMinigamesProcess(Figures.SU, approved[Figures.SU], discarded[Figures.SU]);
+        });
+    }
+
+    calculateMinigamesProcess(figure, approved, discarded) {
+        this.allSpins.refs
+            .filter(spin => spin.figures.filter(fig => fig === figure).length === 3)
+            .map(spin => {
+                if (this.isBeautiful(spin)) {
+                    approved.push(spin);
+                } else {
+                    discarded.push(spin);
+                }
+            });
+        this.printRawArrays('MINIGAME', [approved, discarded]);
     }
 
     // COMMON
