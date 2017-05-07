@@ -10,35 +10,44 @@ export default class MathStoreBottom {
     config = appConfigBottom;
     // LOCK
     @observable isProcessing = false;
+    // STATS
+    @observable stats = {};
     // ALL SPINS
-    @observable allSpins = { 
+    allSpins = { 
         refs: [],
         count: 0 
     };
-    // No prize
-    @observable no_prize = [];
-    @observable no_prize_discarded = [];
-    // CH
-    @observable prizes_CH = [];
-    @observable prizes_CH_discarded = [];
-    @observable retenciones_CH = [];
-    @observable retenciones_CH_discarded = [];
-    @observable avances_CH_1 = [];
-    @observable avances_CH_1_discarded = [];
-    @observable avances_CH_2 = [];
-    @observable avances_CH_2_discarded = [];
-    @observable avances_CH_3 = [];
-    @observable avances_CH_3_discarded = [];
-    @observable avances_CH_4 = [];
-    @observable avances_CH_4_discarded = [];
+    prizes = {
+        approved: [
+            [],[],[],[],[],[],[],[],[],[],[],[]
+        ],
+        discarded: [
+            [],[],[],[],[],[],[],[],[],[],[],[]
+        ]
+    };
+    advancements = {
+        approved: [
+            [],[],[],[],[],[],[],[],[],[],[],[]
+        ],
+        discarded: [
+            [],[],[],[],[],[],[],[],[],[],[],[]
+        ]
+    };
+    retentions = {
+        approved: [
+            [],[],[],[],[],[],[],[],[],[],[],[]
+        ],
+        discarded: [
+            [],[],[],[],[],[],[],[],[],[],[],[]
+        ]
+    };
 
     constructor(emitter) {
         this.emitter = emitter;
         this.emitter.addListener(EventConstants.CalculateAllSpins, () => this.calculateAllSpins());
-        this.emitter.addListener(EventConstants.CalculateNoPrize, () => this.calculateNoPrize());
-        this.emitter.addListener(EventConstants.CalculatePrizesCH, () => this.calculatePrizesCH());
-        this.emitter.addListener(EventConstants.CalculateAvancesCH, () => this.calculateAvancesCH());
-        this.emitter.addListener(EventConstants.CalculateRetencionesCH, () => this.calculateRetencionesCH());
+        this.emitter.addListener(EventConstants.CalculatePrizes, () => this.calculatePrizes());
+        this.emitter.addListener(EventConstants.CalculateAvances, () => this.calculateAvances());
+        this.emitter.addListener(EventConstants.CalculateRetenciones, () => this.calculateRetenciones());
     }
 
     // ALL SPINS
@@ -76,38 +85,41 @@ export default class MathStoreBottom {
 
     // PRIZES
 
-    calculateNoPrize() {
+    calculatePrizes() {
+        this.safeExecution(() => {
+            let approved = this.prizes.approved;
+            let discarded = this.prizes.discarded;
+            this.calculateNoPrize(approved[Figures.NO_PRIZE], discarded[Figures.NO_PRIZE]);
+            this.calculatePrizesProcess(Figures.CH, approved[Figures.CH], discarded[Figures.CH]);
+            this.calculatePrizesProcess(Figures.OR, approved[Figures.OR], discarded[Figures.OR]);
+            this.calculatePrizesProcess(Figures.PL, approved[Figures.PL], discarded[Figures.PL]);
+            this.calculatePrizesProcess(Figures.PE, approved[Figures.PE], discarded[Figures.PE]);
+            this.calculatePrizesProcess(Figures.ST, approved[Figures.ST], discarded[Figures.ST]);
+            this.calculatePrizesProcess(Figures.ME, approved[Figures.ME], discarded[Figures.ME]);
+            this.calculatePrizesProcess(Figures.G7, approved[Figures.G7], discarded[Figures.G7]);
+            this.calculatePrizesProcess(Figures.R7, approved[Figures.R7], discarded[Figures.R7]);
+            this.calculatePrizesProcess(Figures.B7, approved[Figures.B7], discarded[Figures.B7]);
+        });
+    }
+
+    calculateNoPrize(approved, discarded) {
         this.safeExecution(() => {
             this.allSpins.refs
                 .filter(spin => !spin.prize)
                 .map(spin => {
                     if (this.isBeautiful(spin)) {
-                        this.no_prize.push(spin);
+                        approved.push(spin);
                     } else {
-                        this.no_prize_discarded.push(spin);
+                        discarded.push(spin);
                     }
                 });
-            this.printRawArrays('NO PRIZE', [this.no_prize, this.no_prize_discarded]);
-        });
-    }
-
-    calculatePrizesCH() {
-        this.safeExecution(() => {
-            this.calculatePrizesProcess(Figures.CH, this.prizes_CH, this.prizes_CH_discarded);
-            this.allSpins.refs
-                .filter(spin => (spin.prize && spin.prize.figure === Figures.CH))
-                .map(spin => {
-                    if (this.isBeautiful(spin)) {
-                        this.prizes_CH.push(spin);
-                    } else {
-                        this.prizes_CH_discarded.push(spin);
-                    }
-                });
-            this.printRawArrays('PRIZES CH', [this.prizes_CH, this.prizes_CH_discarded]);
+            this.printRawArrays('NO PRIZE', [approved, discarded]);
         });
     }
 
     calculatePrizesProcess(figure, approved, discarded) {
+        approved = [];
+        discarded = [];
         this.allSpins.refs
             .filter(spin => (spin.prize && spin.prize.figure === figure))
             .map(spin => {
@@ -117,42 +129,42 @@ export default class MathStoreBottom {
                     discarded.push(spin);
                 }
             });
+        this.printRawArrays('PRIZES ' + figure, [approved, discarded]);
     }
 
     // AVANCES
-    /*
-        Calcula avances (crea un array de ID/ref sobre el allSpins)
-        Que compleixin premi de CH amb aquests avances en cualsevol combinació de reels sense que per mig hi hagi premi igual o més gran, eliminar casos lletjos
-        4: 1-4 avances
-        Mostrar % vàlids (acceptats i eliminats per lletjos)
-    */
 
-    calculateAvancesCH() {
+    calculateAvances() {
         this.safeExecution(() => {
-            this.calculateAvancesProcess(this.prizes_CH, Figures.CH, 1, this.avances_CH_1, this.avances_CH_1_discarded);
-            this.calculateAvancesProcess(this.prizes_CH, Figures.CH, 2, this.avances_CH_2, this.avances_CH_2_discarded);
-            this.calculateAvancesProcess(this.prizes_CH, Figures.CH, 3, this.avances_CH_3, this.avances_CH_3_discarded);
-            this.calculateAvancesProcess(this.prizes_CH, Figures.CH, 4, this.avances_CH_4, this.avances_CH_4_discarded);
-            this.printRawArrays(
-                'AVANCES CH',
-                [
-                    this.avances_CH_1,
-                    this.avances_CH_1_discarded,
-                    this.avances_CH_2,
-                    this.avances_CH_2_discarded,
-                    this.avances_CH_3,
-                    this.avances_CH_3_discarded,
-                    this.avances_CH_4,
-                    this.avances_CH_4_discarded,
-                ]
-            );
+            this.calculateAvancesByFigure(Figure.NO_PRIZE);
+            this.calculateAvancesByFigure(Figure.CH);
+            this.calculateAvancesByFigure(Figure.OR);
+            this.calculateAvancesByFigure(Figure.PL);
+            this.calculateAvancesByFigure(Figure.PE);
+            this.calculateAvancesByFigure(Figure.ST);
+            this.calculateAvancesByFigure(Figure.ME);
+            this.calculateAvancesByFigure(Figure.G7);
+            this.calculateAvancesByFigure(Figure.R7);
+            this.calculateAvancesByFigure(Figure.B7);
         });
+    }
+
+    calculateAvancesByFigure(figure) {
+        this.advancements.approved[figure] = [];
+        this.advancements.discarded[figure] = [];
+        let approved = this.advancements.approved[figure];
+        let discarded = this.advancements.discarded[figure];
+        this.calculateAvancesProcess(this.prizes.approved[figure], 1, approved[figure][0], discarded[figure][0]);
+        this.calculateAvancesProcess(this.prizes.approved[figure], 2, approved[figure][1], discarded[figure][1]);
+        this.calculateAvancesProcess(this.prizes.approved[figure], 3, approved[figure][2], discarded[figure][2]);
+        this.calculateAvancesProcess(this.prizes.approved[figure], 4, approved[figure][3], discarded[figure][3]);
+        this.printRawArrays('AVANCES ' + figure, [...approved, ...discarded]);
     }
 
     /**
      * Sí, la complejidad ciclomátia de esta función es una mierda... si esto fuera medio serio habría que refactorizarlo
      */
-    calculateAvancesProcess(spins, figure, avances, approved, discarded) {
+    calculateAvancesProcess(spins, avances, approved, discarded) {
         // from all prized spins
             // 1 ->
                 // N retrocesos R1 ->
@@ -203,11 +215,20 @@ export default class MathStoreBottom {
 
     // RETENCIONES
 
-    calculateRetencionesCH() {
+    calculateRetenciones() {
         this.safeExecution(() => {
-            this.calculateRetencionesProcess(Figures.CH, this.retenciones_CH, this.retenciones_CH_discarded);
+            let approved = this.retentions.approved;
+            let discarded = this.retentions.discarded;
+            this.calculateRetencionesProcess(Figures.CH, approved[Figures.CH], discarded[Figures.CH]);
+            this.calculateRetencionesProcess(Figures.OR, approved[Figures.OR], discarded[Figures.OR]);
+            this.calculateRetencionesProcess(Figures.PL, approved[Figures.PL], discarded[Figures.PL]);
+            this.calculateRetencionesProcess(Figures.PE, approved[Figures.PE], discarded[Figures.PE]);
+            this.calculateRetencionesProcess(Figures.ST, approved[Figures.ST], discarded[Figures.ST]);
+            this.calculateRetencionesProcess(Figures.ME, approved[Figures.ME], discarded[Figures.ME]);
+            this.calculateRetencionesProcess(Figures.G7, approved[Figures.G7], discarded[Figures.G7]);
+            this.calculateRetencionesProcess(Figures.R7, approved[Figures.R7], discarded[Figures.R7]);
+            this.calculateRetencionesProcess(Figures.B7, approved[Figures.B7], discarded[Figures.B7]);
         });
-        this.printRawArrays('RETENCIONES CH', [this.retenciones_CH, this.retenciones_CH_discarded]);
     }
 
     calculateRetencionesProcess(figure, approved, discarded) {
@@ -220,6 +241,7 @@ export default class MathStoreBottom {
                     discarded.push(spin);
                 }
             });
+        this.printRawArrays('RETENCIONES ' + figure, [approved, discarded]);
     }
 
     // COMMON

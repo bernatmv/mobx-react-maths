@@ -1,7 +1,7 @@
 
 // COMMON
 
-const NA = 0;
+const NO_PRIZE = 0;
 const CH = 1;
 const OR = 2;
 const PL = 3;
@@ -16,7 +16,7 @@ const SH = 11;
 const QB = 12;
 
 export const Figures = {
-    NA: NA,
+    NO_PRIZE: NO_PRIZE,
     CH: CH,
     OR: OR,
     PL: PL,
