@@ -266,9 +266,17 @@ export default class MathStoreBottom {
                                 if ((avances - x - y - z) === 0) {
                                     if (!this.havePrize(currentStep3)) {
                                         if (this.isBeautiful(currentStep3)) {
-                                            approved.push(currentStep3);
+                                            approved.push({ 
+                                                startSpin: currentStep3, 
+                                                prizedSpin: spin, 
+                                                movements: [x,y,z] 
+                                            });
                                         } else {
-                                            discarded.push(currentStep3);
+                                            discarded.push({ 
+                                                startSpin: currentStep3, 
+                                                prizedSpin: spin, 
+                                                movements: [x,y,z] 
+                                            });
                                         }
                                     }
                                 } else {
