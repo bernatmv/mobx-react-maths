@@ -37,6 +37,25 @@ export const Figures = {
     QB: QB,
 };
 
+export const FigureNames = [
+    'NO_PRIZE',
+    'CH',
+    'OR',
+    'PL',
+    'PE',
+    'ST',
+    'ME',
+    'G7',
+    'R7',
+    'B7',
+    'SH_x1',
+    'SH_x2',
+    'SH_x3',
+    'SU',
+    'SH',
+    'QB',
+];
+
 // BOTTOM
 
 export const appConfigBottom = {

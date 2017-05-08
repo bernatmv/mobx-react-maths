@@ -1,5 +1,5 @@
 import {observable} from 'mobx';
-import {appConfigBottom, Figures} from '../config/appConfig';
+import {appConfigBottom, Figures, FigureNames} from '../config/appConfig';
 import EventConstants from '../common/constants/eventConstants';
 import SystemConstants from '../common/constants/systemConstants';
 
@@ -11,7 +11,53 @@ export default class MathStoreBottom {
     // LOCK
     @observable isProcessing = false;
     // STATS
-    @observable stats = {};
+    @observable stats = {
+        all: 0,
+        prizes: {
+            approved: new Array(15),
+            discarded: new Array(15)
+        },
+        retentions: {
+            approved: new Array(15),
+            discarded: new Array(15)
+        },
+        advancements: {
+            approved: [
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0]
+            ],
+            discarded: [
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0],
+                [0,0,0,0]
+            ]
+        }
+    };
     // ALL SPINS
     allSpins = { 
         refs: [],
@@ -110,6 +156,7 @@ export default class MathStoreBottom {
                 }            
             }            
         }
+        this.stats.all = this.allSpins.count;
         this.printResult(this.allSpins);
     }
 
@@ -155,7 +202,7 @@ export default class MathStoreBottom {
                     discarded.push(spin);
                 }
             });
-        this.printRawArrays('PRIZES ' + figure, [approved, discarded]);
+        this.printRawArrays('PRIZES ' + FigureNames[figure], [approved, discarded]);
     }
 
     // AVANCES
@@ -186,7 +233,7 @@ export default class MathStoreBottom {
         this.calculateAvancesProcess(this.prizes.approved[figure], 2, approved[1], discarded[1]);
         this.calculateAvancesProcess(this.prizes.approved[figure], 3, approved[2], discarded[2]);
         this.calculateAvancesProcess(this.prizes.approved[figure], 4, approved[3], discarded[3]);
-        this.printRawArrays('AVANCES ' + figure, [...approved, ...discarded]);
+        this.printRawArrays('AVANCES ' + FigureNames[figure], [...approved, ...discarded]);
     }
 
     /**
@@ -270,7 +317,7 @@ export default class MathStoreBottom {
                     discarded.push(spin);
                 }
             });
-        this.printRawArrays('RETENCIONES ' + figure, [approved, discarded]);
+        this.printRawArrays('RETENCIONES ' + FigureNames[figure], [approved, discarded]);
     }
 
     // BONOS
