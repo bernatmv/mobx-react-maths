@@ -4,38 +4,16 @@ import * as styles from '../appContainer.css';
 import SystemConstants from '../../common/constants/systemConstants';
 import EventConstants from '../../common/constants/eventConstants';
 import SpinBagCard from '../components/spinBagCard';
-
-let MAX_SPINS = 16*16*16;
+import ProgressCard from '../components/progressCard';
 
 @observer
 export default class BottomMath extends React.Component {
     calculateSpins = () => {
-        this.props.emitter.emit(EventConstants.CalculateAllSpins);
-    };
-
-    calculatePrizes = () => {
-        this.props.emitter.emit(EventConstants.CalculatePrizes);
-    };
-
-    calculateAvances = () => {
-        this.props.emitter.emit(EventConstants.CalculateAvances);
-    };
-
-    calculateRetenciones = () => {
-        this.props.emitter.emit(EventConstants.CalculateRetenciones);
-    };
-
-    calculateBonos = () => {
-        this.props.emitter.emit(EventConstants.CalculateBonos);
-    };
-
-    calculateMinigames = () => {
-        this.props.emitter.emit(EventConstants.CalculateMinigames);
+        this.props.emitter.emit(EventConstants.CalculateAll);
     };
 
     render() {
         let store = this.props.store;
-        let progress = Math.ceil((this.props.store.allSpins.count / MAX_SPINS) * 100);
         return (
             <div className={styles.container}>
 
@@ -43,48 +21,10 @@ export default class BottomMath extends React.Component {
 
                 {/* REMOVE BUTTON WHEN EACH PROGRESSION IS DONE */}
 
-                <SpinBagCard
+                <ProgressCard
                     title={'Calculate all spins'}
-                    subtitle={'Full permutation'}
                     action={this.calculateSpins}
-                    spins={0}
-                    progress={progress}
-                    isProcessing={this.props.store.isProcessing}
-                    />
-
-                <SpinBagCard
-                    title={'Premios'}
-                    action={this.calculatePrizes} 
-                    spins={0} 
-                    isProcessing={this.props.store.isProcessing}
-                    />
-
-                <SpinBagCard
-                    title={'Bonos'}
-                    action={this.calculateBonos} 
-                    spins={0} 
-                    isProcessing={this.props.store.isProcessing}
-                    />
-
-                <SpinBagCard
-                    title={'Minijuegos'}
-                    action={this.calculateMinigames} 
-                    spins={0} 
-                    isProcessing={this.props.store.isProcessing}
-                    />
-
-                <SpinBagCard
-                    title={'Avances'}
-                    action={this.calculateAvances} 
-                    spins={0}
-                    progress={0}
-                    isProcessing={this.props.store.isProcessing}
-                    />
-
-                <SpinBagCard
-                    title={'Retenciones'}
-                    action={this.calculateRetenciones}
-                    spins={0}
+                    step={store.stats.step}
                     isProcessing={this.props.store.isProcessing}
                     />
             </div>

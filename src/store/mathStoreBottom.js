@@ -12,16 +12,20 @@ export default class MathStoreBottom {
     @observable isProcessing = false;
     // STATS
     @observable stats = {
+        step: 0,
         all: 0,
         prizes: {
+            step: 0,
             approved: new Array(15),
             discarded: new Array(15)
         },
         retentions: {
+            step: 0,
             approved: new Array(15),
             discarded: new Array(15)
         },
         advancements: {
+            step: 0,
             approved: [
                 [0,0,0,0],
                 [0,0,0,0],
@@ -118,12 +122,30 @@ export default class MathStoreBottom {
 
     constructor(emitter) {
         this.emitter = emitter;
+        this.emitter.addListener(EventConstants.CalculateAll, () => this.calculateAll());
         this.emitter.addListener(EventConstants.CalculateAllSpins, () => this.calculateAllSpins());
         this.emitter.addListener(EventConstants.CalculatePrizes, () => this.calculatePrizes());
         this.emitter.addListener(EventConstants.CalculateAvances, () => this.calculateAvances());
         this.emitter.addListener(EventConstants.CalculateRetenciones, () => this.calculateRetenciones());
         this.emitter.addListener(EventConstants.CalculateBonos, () => this.calculateBonos());
         this.emitter.addListener(EventConstants.CalculateMinigames, () => this.calculateMinigames());
+    }
+
+    // CALCULATE ALL
+
+    calculateAll() {
+        this.calculateAllSpins();
+        this.stats.step = 1;
+        this.calculatePrizes();
+        this.stats.step = 2;
+        this.calculateBonos();
+        this.stats.step = 3;
+        this.calculateMinigames();
+        this.stats.step = 4;
+        this.calculateAvances();
+        this.stats.step = 5;
+        this.calculateRetenciones();
+        this.stats.step = 6;
     }
 
     // ALL SPINS

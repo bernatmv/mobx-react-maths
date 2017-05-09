@@ -1,4 +1,5 @@
 export default class EventConstants {
+    static get CalculateAll() { return 'CalculateAll'; }
     static get CalculateAllSpins() { return 'CalculateAllSpins'; }
     static get CalculatePrizes() { return 'CalculatePrizes'; }
     static get CalculateAvances() { return 'CalculateAvances'; }
