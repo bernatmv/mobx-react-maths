@@ -426,7 +426,26 @@ export default class MathStoreBottom {
     }
 
     isBeautiful(spin) {
-        //TODO: check for ugly spins (jackpots on top or below, etc)
+        // No prizes > 20 (minigames, G7, R7, B7, 3xBONOS) over line
+        if (!this.acceptedPrizeProximity(this.rollBackAllReels(spin))) {
+            return false;
+        }
+        // No prizes > 20 (minigames, G7, R7, B7, 3xBONOS) below line
+        if (!this.acceptedPrizeProximity(this.rollForwardAllReels(spin))) {
+            return false;
+        }
+        return true;
+    }
+
+    acceptedPrizeProximity(spin) {
+        if (!spin.prize) {
+            return true;
+        }
+        if ((spin.prize.type === SystemConstants.Bonos && spin.prize.value > 5)
+            || (spin.prize.type === SystemConstants.Coins && spin.prize.value > 20)
+            || (spin.prize.type === SystemConstants.Minigame)) {
+            return false;
+        }
         return true;
     }
 
@@ -438,10 +457,25 @@ export default class MathStoreBottom {
         return currentStep;
     }
 
+    rollBackAllReels(spin, numPositions = 1) {
+        return this.allSpins[this.getId(this.normalize(spin.positions[SystemConstants.Reel_1] - numPositions), this.normalize(spin.positions[SystemConstants.Reel_2] - numPositions), this.normalize(spin.positions[SystemConstants.Reel_3] - numPositions))];
+    }
+
+    rollForwardAllReels(spin, numPositions = 1) {
+        return this.allSpins[this.getId(this.normalize(spin.positions[SystemConstants.Reel_1] + numPositions), this.normalize(spin.positions[SystemConstants.Reel_2] + numPositions), this.normalize(spin.positions[SystemConstants.Reel_3] + numPositions))];
+    }
+
     rollBackReel(reel, spin) {
         let posR1 = reel === SystemConstants.Reel_1 ? this.normalize(spin.positions[SystemConstants.Reel_1] - 1) : spin.positions[SystemConstants.Reel_1];
         let posR2 = reel === SystemConstants.Reel_2 ? this.normalize(spin.positions[SystemConstants.Reel_2] - 1) : spin.positions[SystemConstants.Reel_2];
         let posR3 = reel === SystemConstants.Reel_3 ? this.normalize(spin.positions[SystemConstants.Reel_3] - 1) : spin.positions[SystemConstants.Reel_3];
+        return this.allSpins[this.getId(posR1, posR2, posR3)];
+    }
+
+    rollForwardReel(reel, spin) {
+        let posR1 = reel === SystemConstants.Reel_1 ? this.normalize(spin.positions[SystemConstants.Reel_1] + 1) : spin.positions[SystemConstants.Reel_1];
+        let posR2 = reel === SystemConstants.Reel_2 ? this.normalize(spin.positions[SystemConstants.Reel_2] + 1) : spin.positions[SystemConstants.Reel_2];
+        let posR3 = reel === SystemConstants.Reel_3 ? this.normalize(spin.positions[SystemConstants.Reel_3] + 1) : spin.positions[SystemConstants.Reel_3];
         return this.allSpins[this.getId(posR1, posR2, posR3)];
     }
 

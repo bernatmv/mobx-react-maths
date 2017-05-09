@@ -21,7 +21,7 @@ export default class SpinBagCard extends React.Component {
                             if (spins.length) {
                                 return spins.map((advancements, i) => {
                                     return (advancements > 0)
-                                        ? this.buildStats(`Avances ${FigureNames[index]}_x${i + 1}`, (index * 100) + i, stats.approved[index][i], Math.ceil((stats.approved[index][i]/(stats.approved[index][i] + stats.discarded[index][i]))*100), stats.discarded[index][i])
+                                        ? this.buildStats(`${FigureNames[index]}_A${i + 1}`, (index * 100) + i, stats.approved[index][i], Math.ceil((stats.approved[index][i]/(stats.approved[index][i] + stats.discarded[index][i]))*100), stats.discarded[index][i])
                                         : null;
                                 });
                             } else {
