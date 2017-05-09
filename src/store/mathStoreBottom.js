@@ -146,6 +146,12 @@ export default class MathStoreBottom {
         });
         this.calculateAvances();
         this.stats.step = 5;
+        this.advancements.approved.forEach((spins, index) => {
+            spins.forEach((advancements, i) => {
+                this.stats.advancements.approved[index][i] = advancements.length;
+                this.stats.advancements.discarded[index][i] = this.advancements.discarded[index][i].length;
+            });
+        });
         this.calculateRetenciones();
         this.stats.step = 6;
         this.retentions.approved.forEach((spins, index) => {
