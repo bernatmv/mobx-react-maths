@@ -1,22 +1,16 @@
 import React from 'react';
-import FlatButton from 'material-ui/FlatButton';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
+import * as styles from '../appContainer.css';
 
 export default class SpinBagCard extends React.Component {
     render() {
-        let calculateButton = !this.props.isProcessing && this.props.spins === 0
-                    ? <CardActions>
-                        <FlatButton label="Calculate" onTouchTap={this.props.action} />
-                    </CardActions>
-                    : null;
         return (
-            <Card>
+            <Card className={styles.card}>
                 <CardHeader
                     title={this.props.title}
                     />
-                {calculateButton}
                 <CardText>
-                    
+                    HERE BE STATS
                 </CardText>
             </Card>
         );

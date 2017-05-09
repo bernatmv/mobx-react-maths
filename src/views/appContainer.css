@@ -1,3 +1,10 @@
 .container {
     margin: 12px;
+    display: flex;
+    flex-direction: row;
+}
+
+.card {
+    display: flex;
+    flex: 1;
 }

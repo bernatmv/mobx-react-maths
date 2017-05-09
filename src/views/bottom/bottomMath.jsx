@@ -16,16 +16,26 @@ export default class BottomMath extends React.Component {
         let store = this.props.store;
         return (
             <div className={styles.container}>
-
-                {/* ADD GLOBAL PROGRESSION AND GLOBAL BUTTON */}
-
-                {/* REMOVE BUTTON WHEN EACH PROGRESSION IS DONE */}
-
                 <ProgressCard
                     title={'Calculate all spins'}
                     action={this.calculateSpins}
                     step={store.stats.step}
                     isProcessing={this.props.store.isProcessing}
+                    />
+
+                <SpinBagCard
+                    title={'Prizes'}
+                    step={store.stats.prizes.step}
+                    />
+
+                <SpinBagCard
+                    title={'Retentions'}
+                    step={store.stats.retentions.step}
+                    />
+
+                <SpinBagCard
+                    title={'Advancements'}
+                    step={store.stats.advancements.step}
                     />
             </div>
         );
