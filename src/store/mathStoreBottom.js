@@ -15,17 +15,14 @@ export default class MathStoreBottom {
         step: 0,
         all: 0,
         prizes: {
-            step: 0,
             approved: new Array(15),
             discarded: new Array(15)
         },
         retentions: {
-            step: 0,
             approved: new Array(15),
             discarded: new Array(15)
         },
         advancements: {
-            step: 0,
             approved: [
                 [0,0,0,0],
                 [0,0,0,0],
@@ -136,16 +133,25 @@ export default class MathStoreBottom {
     calculateAll() {
         this.calculateAllSpins();
         this.stats.step = 1;
+        this.stats.all = this.allSpins.length;
         this.calculatePrizes();
         this.stats.step = 2;
         this.calculateBonos();
         this.stats.step = 3;
         this.calculateMinigames();
         this.stats.step = 4;
+        this.prizes.approved.forEach((spins, index) => {
+            this.stats.prizes.approved[index] = spins.length;
+            this.stats.prizes.discarded[index] = this.prizes.discarded[index].length;
+        });
         this.calculateAvances();
         this.stats.step = 5;
         this.calculateRetenciones();
         this.stats.step = 6;
+        this.retentions.approved.forEach((spins, index) => {
+            this.stats.retentions.approved[index] = spins.length;
+            this.stats.retentions.discarded[index] = this.retentions.discarded[index].length;
+        });
     }
 
     // ALL SPINS

@@ -25,17 +25,17 @@ export default class BottomMath extends React.Component {
 
                 <SpinBagCard
                     title={'Prizes'}
-                    step={store.stats.prizes.step}
+                    stats={store.stats.prizes}
                     />
 
                 <SpinBagCard
                     title={'Retentions'}
-                    step={store.stats.retentions.step}
+                    stats={store.stats.retentions}
                     />
 
                 <SpinBagCard
                     title={'Advancements'}
-                    step={store.stats.advancements.step}
+                    stats={store.stats.advancements}
                     />
             </div>
         );
