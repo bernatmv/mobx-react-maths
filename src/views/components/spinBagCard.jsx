@@ -1,10 +1,25 @@
 import React from 'react';
 import {Figures, FigureNames} from '../../config/appConfig';
 import Divider from 'material-ui/Divider';
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 import {Card, CardHeader, CardText} from 'material-ui/Card';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import * as styles from '../appContainer.css';
 
 export default class SpinBagCard extends React.Component {
+    state = {
+        open: false,
+    };
+
+    handleOpen = () => {
+        this.setState({open: true});
+    };
+
+    handleClose = () => {
+        this.setState({open: false});
+    };
+
     buildStats(title, key,approvedNumber, approvedPercentage, discardedNumber) {
         return <div key={key}>
                 <Divider />
@@ -36,11 +51,28 @@ export default class SpinBagCard extends React.Component {
                 <CardHeader
                     title={this.props.title}
                     />
-                <CardText>
-                    <p>Stats</p>
+                <CardText className={styles.card__text}>
+                    <FlatButton label='Show C# code' onTouchTap={this.handleOpen} />
+                    <CopyToClipboard 
+                        text={'caca'}
+                        onCopy={this.handleClose}
+                        >
+                        <FlatButton label='Copy to clipboard' />
+                    </CopyToClipboard>
                     <Divider />
                     {statsList}
                 </CardText>
+                <Dialog
+                    title='C# code'
+                    modal={false}
+                    open={this.state.open}
+                    onRequestClose={this.handleClose}
+                    autoScrollBodyContent={true}
+                    >
+                    <pre>
+                        var insbruk = [new Spin('lalala': null)];
+                    </pre>
+                </Dialog>
             </Card>
         );
     }

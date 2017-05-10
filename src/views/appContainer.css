@@ -8,3 +8,7 @@
     display: flex;
     flex: 1;
 }
+
+.card__text {
+    padding: 0 !important;
+}
