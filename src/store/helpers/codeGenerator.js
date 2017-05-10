@@ -20,7 +20,7 @@ export const generateCodeBag = (variable, bag) => {
     return `
         var ${variable} = new Array[] {
             ${bag.map(spin => generateCodeSpin(spin)).join(',\n            ')}
-        }
+        };
 `;
 };
 
@@ -34,6 +34,6 @@ export const generateAdvancementsCodeBag = (variable, bag) => {
             ${bag.map(advancement => {
                 return `new Advancement(${generateCodeSpin(advancement.startSpin)}, ${generateCodeSpin(advancement.prizedSpin)}, new Array[] {${advancement.movements.join()}}`;
             }).join(',\n            ')}
-        }
+        };
 `;
 };

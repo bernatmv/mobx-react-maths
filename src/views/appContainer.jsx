@@ -12,7 +12,7 @@ export default class AppContainer extends React.Component {
                     <BottomMath store={this.props.store.mathBottom} emitter={this.props.emitter} />
                 </Tab>
                 <Tab label={'Top Maths'}>
-                    <TopMath emitter={this.props.emitter} />
+                    <TopMath store={this.props.store.mathBottom} emitter={this.props.emitter} />
                 </Tab>
             </Tabs>
         );
