@@ -54,7 +54,7 @@ export default class SpinBagCard extends React.Component {
                 <CardText className={styles.card__text}>
                     <FlatButton label='Show C# code' onTouchTap={this.handleOpen} />
                     <CopyToClipboard 
-                        text={'caca'}
+                        text={stats.code}
                         onCopy={this.handleClose}
                         >
                         <FlatButton label='Copy to clipboard' />
@@ -70,7 +70,7 @@ export default class SpinBagCard extends React.Component {
                     autoScrollBodyContent={true}
                     >
                     <pre>
-                        var insbruk = [new Spin('lalala': null)];
+                        {stats.code}
                     </pre>
                 </Dialog>
             </Card>

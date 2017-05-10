@@ -2,6 +2,7 @@ import {observable} from 'mobx';
 import {appConfigBottom, Figures, FigureNames} from '../config/appConfig';
 import EventConstants from '../common/constants/eventConstants';
 import SystemConstants from '../common/constants/systemConstants';
+import {generateCodeBag} from './helpers/codeGenerator';
 
 const initialPositions = [0,0,0];
 
@@ -15,14 +16,17 @@ export default class MathStoreBottom {
         step: 0,
         all: 0,
         prizes: {
+            code: '',
             approved: new Array(15),
             discarded: new Array(15)
         },
         retentions: {
+            code: '',
             approved: new Array(15),
             discarded: new Array(15)
         },
         advancements: {
+            code: '',
             approved: [
                 [0,0,0,0],
                 [0,0,0,0],
@@ -144,6 +148,7 @@ export default class MathStoreBottom {
             this.stats.prizes.approved[index] = spins.length;
             this.stats.prizes.discarded[index] = this.prizes.discarded[index].length;
         });
+        this.stats.prizes.code = generateCodeBag('Prizes_CH', this.prizes.approved[1]);
         this.calculateAvances();
         this.stats.step = 5;
         this.advancements.approved.forEach((spins, index) => {
