@@ -17,10 +17,23 @@ export const generateCodeBag = (variable, bag) => {
         return '';
     }
     console.log(`===> GENERATING CODE FOR: ${variable} <===`);
-    console.log(bag);
     return `
         var ${variable} = new Array[] {
-            ${bag.map(spin => generateCodeSpin(spin)).join(',\n')}
+            ${bag.map(spin => generateCodeSpin(spin)).join(',\n            ')}
+        }
+`;
+};
+
+export const generateAdvancementsCodeBag = (variable, bag) => {
+    if (!bag) {
+        return '';
+    }
+    console.log(`===> GENERATING ADVANCEMENTS CODE FOR: ${variable} <===`);
+    return `
+        var ${variable} = new Array[] {
+            ${bag.map(advancement => {
+                return `new Advancement(${generateCodeSpin(advancement.startSpin)}, ${generateCodeSpin(advancement.prizedSpin)}, new Array[] {${advancement.movements.join()}}`;
+            }).join(',\n            ')}
         }
 `;
 };

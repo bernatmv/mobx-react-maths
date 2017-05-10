@@ -2,7 +2,7 @@ import {observable} from 'mobx';
 import {appConfigBottom, Figures, FigureNames} from '../config/appConfig';
 import EventConstants from '../common/constants/eventConstants';
 import SystemConstants from '../common/constants/systemConstants';
-import {generateCodeBag} from './helpers/codeGenerator';
+import {generateCodeBag, generateAdvancementsCodeBag} from './helpers/codeGenerator';
 
 const initialPositions = [0,0,0];
 
@@ -16,17 +16,17 @@ export default class MathStoreBottom {
         step: 0,
         all: 0,
         prizes: {
-            code: '',
+            code: [],
             approved: new Array(15),
             discarded: new Array(15)
         },
         retentions: {
-            code: '',
+            code: [],
             approved: new Array(15),
             discarded: new Array(15)
         },
         advancements: {
-            code: '',
+            code: [],
             approved: [
                 [0,0,0,0],
                 [0,0,0,0],
@@ -148,7 +148,6 @@ export default class MathStoreBottom {
             this.stats.prizes.approved[index] = spins.length;
             this.stats.prizes.discarded[index] = this.prizes.discarded[index].length;
         });
-        this.stats.prizes.code = generateCodeBag('Prizes_CH', this.prizes.approved[1]);
         this.calculateAvances();
         this.stats.step = 5;
         this.advancements.approved.forEach((spins, index) => {
@@ -229,6 +228,7 @@ export default class MathStoreBottom {
                 }
             });
         this.printRawArrays('NO PRIZE', [approved, discarded]);
+        this.stats.prizes.code.push(generateCodeBag('NoPrize', approved));
     }
 
     calculatePrizesProcess(figure, approved, discarded) {
@@ -241,7 +241,8 @@ export default class MathStoreBottom {
                     discarded.push(spin);
                 }
             });
-        this.printRawArrays('PRIZES ' + FigureNames[figure], [approved, discarded]);
+        this.printRawArrays(`PRIZES ${FigureNames[figure]}`, [approved, discarded]);
+        this.stats.prizes.code.push(generateCodeBag(`Prizes_${FigureNames[figure]}`, approved));
     }
 
     // AVANCES
@@ -273,6 +274,10 @@ export default class MathStoreBottom {
         this.calculateAvancesProcess(this.prizes.approved[figure], 3, approved[2], discarded[2]);
         this.calculateAvancesProcess(this.prizes.approved[figure], 4, approved[3], discarded[3]);
         this.printRawArrays('AVANCES ' + FigureNames[figure], [...approved, ...discarded]);
+        this.stats.advancements.code.push(generateAdvancementsCodeBag(`Advancements_${FigureNames[figure]}_x1`, approved[0]));
+        this.stats.advancements.code.push(generateAdvancementsCodeBag(`Advancements_${FigureNames[figure]}_x2`, approved[1]));
+        this.stats.advancements.code.push(generateAdvancementsCodeBag(`Advancements_${FigureNames[figure]}_x3`, approved[2]));
+        this.stats.advancements.code.push(generateAdvancementsCodeBag(`Advancements_${FigureNames[figure]}_x4`, approved[3]));
     }
 
     /**
@@ -357,6 +362,7 @@ export default class MathStoreBottom {
     calculateRetencionesProcess(figure, approved, discarded) {
         this.allSpins.refs
             .filter(spin => spin.figures.filter(fig => fig === figure).length === 2)
+            .filter(spin => !spin.prize)
             .map(spin => {
                 if (this.isBeautiful(spin)) {
                     approved.push(spin);
@@ -365,6 +371,7 @@ export default class MathStoreBottom {
                 }
             });
         this.printRawArrays('RETENCIONES ' + FigureNames[figure], [approved, discarded]);
+        this.stats.retentions.code.push(generateCodeBag(`Retentions_${FigureNames[figure]}`, approved));
     }
 
     // BONOS
@@ -390,6 +397,7 @@ export default class MathStoreBottom {
                 }
             });
         this.printRawArrays('BONOS x' + numBonos, [approved, discarded]);
+        this.stats.prizes.code.push(generateCodeBag(`Prizes_${FigureNames[figure]}_x${numBonos}`, approved));
     }
 
     // MINIGAMES
@@ -413,6 +421,7 @@ export default class MathStoreBottom {
                 }
             });
         this.printRawArrays('MINIGAME', [approved, discarded]);
+        this.stats.prizes.code.push(generateCodeBag(`Prizes_${FigureNames[figure]}`, approved));
     }
 
     // COMMON

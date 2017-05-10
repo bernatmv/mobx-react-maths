@@ -12,3 +12,7 @@
 .card__text {
     padding: 0 !important;
 }
+
+.card__text p {
+    padding-left: 10px;
+}
