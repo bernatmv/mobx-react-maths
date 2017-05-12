@@ -5,6 +5,7 @@ import SystemConstants from '../common/constants/systemConstants';
 import {generateCodeBag, generateAdvancementsCodeBag} from './helpers/codeGenerator';
 
 const initialPositions = [0,0,0];
+const noPrizeAcceptancePercentage = 0.25;
 
 export default class MathStoreBottom {
     emitter = null;
@@ -309,7 +310,7 @@ export default class MathStoreBottom {
                                 currentStep3 = this.repeatRollBackReel(SystemConstants.Reel_3, currentStep2, z);
                                 if ((avances - x - y - z) === 0) {
                                     if (!this.havePrize(currentStep3)) {
-                                        if (this.isBeautiful(currentStep3)) {
+                                        if (this.isBeautiful(currentStep3) && this.fitsInPool(spin, currentStep3)) {
                                             approved.push({ 
                                                 startSpin: currentStep3, 
                                                 prizedSpin: spin, 
@@ -447,6 +448,16 @@ export default class MathStoreBottom {
         // No prizes > 20 (minigames, G7, R7, B7, 3xBONOS) below line
         if (!this.acceptedPrizeProximity(this.rollForwardAllReels(spin))) {
             return false;
+        }
+        return true;
+    }
+
+    fitsInPool(spin, advancementSpin) {
+        // No prized spins have some many occurrences that have to be filtered out
+        if (!spin.prize) {
+            if (Math.random() > noPrizeAcceptancePercentage) {
+                return false;
+            }
         }
         return true;
     }

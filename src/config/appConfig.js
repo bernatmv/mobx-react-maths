@@ -130,7 +130,7 @@ export const appConfigBottom = {
         [2],
         [6],
         [22],
-        [1,2,6]
+        [1,2,3]
     ],
     minigame: SU,
     bonos: SH
@@ -138,18 +138,110 @@ export const appConfigBottom = {
 
 // TOP
 
+const TOP_NO_PRIZE = 0;
+const SHIP = 1;
+const BIRD = 2;
+const LEOPARD = 3;
+const LADY = 4;
+const GREEN_GEM = 5;
+const RED_GEM = 6;
+const BLUE_GEM = 7;
+const RUNE = 8;
+
+export const FiguresTop = {
+    TOP_NO_PRIZE: TOP_NO_PRIZE,
+    SHIP: SHIP,
+    BIRD: BIRD,
+    LEOPARD: LEOPARD,
+    LADY: LADY,
+    GREEN_GEM: GREEN_GEM,
+    RED_GEM: RED_GEM,
+    BLUE_GEM: BLUE_GEM,
+    RUNE: RUNE
+};
+
+export const FigureTopNames = [
+    'TOP_NO_PRIZE',
+    'SHIP',
+    'BIRD',
+    'LEOPARD',
+    'LADY',
+    'GREEN_GEM',
+    'RED_GEM',
+    'BLUE_GEM',
+    'RUNE'
+];
+
 export const appConfigTop = {
     reels: [
-        [1,2,3],
-        [1,2,3],
-        [1,2,3]
+        [
+            LEOPARD,
+            LEOPARD,
+            SHIP,
+            GREEN_GEM,
+            BIRD,
+            BIRD,
+            BIRD,
+            BLUE_GEM,
+            RED_GEM,
+            LADY,
+            LADY,
+            LADY,
+            SHIP,
+            LEOPARD,
+            BIRD,
+            GREEN_GEM,
+            LEOPARD
+        ],
+        [
+            LEOPARD,
+            LEOPARD,
+            SHIP,
+            RED_GEM,
+            LADY,
+            LADY,
+            LADY,
+            RUNE,
+            BLUE_GEM,
+            BIRD,
+            BIRD,
+            BIRD,
+            LEOPARD,
+            RUNE,
+            RED_GEM,
+            GREEN_GEM,
+            LEOPARD
+        ],
+        [
+            LADY,
+            LADY,
+            LEOPARD,
+            GREEN_GEM,
+            LEOPARD,
+            LEOPARD,
+            LEOPARD,
+            RED_GEM,
+            BIRD,
+            BIRD,
+            BIRD,
+            SHIP,
+            GREEN_GEM,
+            LADY,
+            BLUE_GEM,
+            BIRD,
+            LADY
+        ]
     ],
-    paytable: {
-        '1': [1,2,3],
-        '2': [5,6,7],
-        '3': [10,100,100]
-    },
-    wild: [],
-    minigame: [],
-    bonos: []
+    paytable: [
+        [0],
+        [3,6,9],
+        [20,40,60,80,100],
+        [20,40,60,80,100],
+        [20,40,60,80,100],
+        [100],
+        [200],
+        [500],
+        [1]
+    ],
+    bonos: SHIP
 };
