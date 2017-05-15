@@ -172,6 +172,81 @@ export const FigureTopNames = [
     'RUNE'
 ];
 
+const SHIP_x1 = 1;
+const SHIP_x2 = 2;
+const SHIP_x3 = 3;
+const BIRD_x1 = 4;
+const BIRD_x2 = 5;
+const BIRD_x3 = 6;
+const BIRD_x4 = 7;
+const BIRD_x5 = 8;
+const LEOPARD_x1 = 9;
+const LEOPARD_x2 = 10;
+const LEOPARD_x3 = 11;
+const LEOPARD_x4 = 12;
+const LEOPARD_x5 = 13;
+const LADY_x1 = 14;
+const LADY_x2 = 15;
+const LADY_x3 = 16;
+const LADY_x4 = 17;
+const LADY_x5 = 18;
+const GREEN_GEM_x1 = 19;
+const RED_GEM_x1 = 20;
+const BLUE_GEM_x1 = 21;
+const RUNE_x1 = 22;
+
+export const PrizesTop = {
+    TOP_NO_PRIZE: TOP_NO_PRIZE,
+    SHIP_x1: SHIP_x1,
+    SHIP_x2: SHIP_x2,
+    SHIP_x3: SHIP_x3,
+    BIRD_x1: BIRD_x1,
+    BIRD_x2: BIRD_x2,
+    BIRD_x3: BIRD_x3,
+    BIRD_x4: BIRD_x4,
+    BIRD_x5: BIRD_x5,
+    LEOPARD_x1: LEOPARD_x1,
+    LEOPARD_x2: LEOPARD_x2,
+    LEOPARD_x3: LEOPARD_x3,
+    LEOPARD_x4: LEOPARD_x4,
+    LEOPARD_x5: LEOPARD_x5,
+    LADY_x1: LADY_x1,
+    LADY_x2: LADY_x2,
+    LADY_x3: LADY_x3,
+    LADY_x4: LADY_x4,
+    LADY_x5: LADY_x5,
+    GREEN_GEM_x1: GREEN_GEM_x1,
+    RED_GEM_x1: RED_GEM_x1,
+    BLUE_GEM_x1: BLUE_GEM_x1,
+    RUNE_x1: RUNE_x1
+};
+
+export const PrizesTopNames = [
+    'TOP_NO_PRIZE',
+    'SHIP_x1',
+    'SHIP_x2',
+    'SHIP_x3',
+    'BIRD_x1',
+    'BIRD_x2',
+    'BIRD_x3',
+    'BIRD_x4',
+    'BIRD_x5',
+    'LEOPARD_x1',
+    'LEOPARD_x2',
+    'LEOPARD_x3',
+    'LEOPARD_x4',
+    'LEOPARD_x5',
+    'LADY_x1',
+    'LADY_x2',
+    'LADY_x3',
+    'LADY_x4',
+    'LADY_x5',
+    'GREEN_GEM_x1',
+    'RED_GEM_x1',
+    'BLUE_GEM_x1',
+    'RUNE_x1'
+];
+
 export const appConfigTop = {
     reels: [
         [
@@ -231,6 +306,21 @@ export const appConfigTop = {
             BIRD,
             LADY
         ]
+    ],
+    /*
+        0, 3, 6
+        1, 4, 7
+        2, 5, 8
+    */
+    lines: [
+        [0,3,6],
+        [1,4,7],
+        [2,5,8],
+        [0,4,8],
+        [2,4,6],
+        [0,1,2],
+        [3,4,5],
+        [6,7,8]
     ],
     paytable: [
         [0],

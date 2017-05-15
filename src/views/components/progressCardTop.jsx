@@ -3,7 +3,7 @@ import FlatButton from 'material-ui/FlatButton';
 import {Step, Stepper, StepLabel, StepContent} from 'material-ui/Stepper';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 
-export default class ProgressCard extends React.Component {
+export default class ProgressCardTop extends React.Component {
     render() {
         let calculateButton = !this.props.isProcessing
                     ? <CardActions>
@@ -32,15 +32,6 @@ export default class ProgressCard extends React.Component {
                         </Step>
                         <Step>
                             <StepLabel>Bonos</StepLabel>
-                        </Step>
-                        <Step>
-                            <StepLabel>Minigames</StepLabel>
-                        </Step>
-                        <Step>
-                            <StepLabel>Advancements</StepLabel>
-                        </Step>
-                        <Step>
-                            <StepLabel>Retentions</StepLabel>
                         </Step>
                     </Stepper>
                 </CardText>

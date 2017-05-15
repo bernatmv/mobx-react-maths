@@ -4,7 +4,7 @@ import * as styles from '../appContainer.css';
 import SystemConstants from '../../common/constants/systemConstants';
 import EventConstants from '../../common/constants/eventConstants';
 import SpinBagCard from '../components/spinBagCard';
-import ProgressCard from '../components/progressCard';
+import ProgressCardTop from '../components/progressCardTop';
 
 @observer
 export default class TopMath extends React.Component {
@@ -16,7 +16,7 @@ export default class TopMath extends React.Component {
         let store = this.props.store;
         return (
             <div className={styles.container}>
-                <ProgressCard
+                <ProgressCardTop
                     title={'Calculate all spins'}
                     action={this.calculateSpins}
                     step={store.stats.step}
