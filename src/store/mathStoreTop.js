@@ -2,7 +2,7 @@ import {observable} from 'mobx';
 import {appConfigTop, FiguresTop as Figures, FigureTopNames as FigureNames, PrizesTop as Prizes, PrizesTopNames as PrizesNames} from '../config/appConfig';
 import EventConstants from '../common/constants/eventConstants';
 import SystemConstants from '../common/constants/systemConstants';
-import {generateCodeBag, generateAdvancementsCodeBag} from './helpers/codeGenerator';
+import {generateCodeBag} from './helpers/codeGeneratorTop';
 
 const initialPositions = [0,0,0];
 const noPrizeAcceptancePercentage = 0.25;
@@ -154,13 +154,12 @@ export default class MathStoreTop {
                 }
             });
         this.printRawArrays(`PRIZES ${FigureNames[figure]}_x${appearances}`, [approved, discarded]);
-        //TODO: refactor generate code to take into account the new prize structure
         this.stats.prizes.code.push(generateCodeBag(`Prizes_${FigureNames[figure]}_x${appearances}`, approved));
     }
 
     // BONOS
 
-    calculateBonos() {//TODO: change
+    calculateBonos() {
         this.safeExecution(() => {
             let approved = this.prizes.approved;
             let discarded = this.prizes.discarded;
@@ -171,9 +170,9 @@ export default class MathStoreTop {
         });
     }
 
-    calculateBonosProcess(figure, numBonos, approved, discarded) {
+    calculateBonosProcess(figure, appearances, approved, discarded) {
         this.allSpins.refs
-            .filter(spin => spin.figures.filter(fig => fig === figure).length === numBonos)
+            .filter(spin => (spin.prize.filter(p => p.figure === figure).length === appearances))
             .map(spin => {
                 if (this.isBeautiful(spin)) {
                     approved.push(spin);
@@ -181,8 +180,8 @@ export default class MathStoreTop {
                     discarded.push(spin);
                 }
             });
-        this.printRawArrays('SCATTER x' + numBonos, [approved, discarded]);
-        this.stats.prizes.code.push(generateCodeBag(`Prizes_${FigureNames[figure]}_x${numBonos}`, approved));
+        this.printRawArrays('SCATTER x' + appearances, [approved, discarded]);
+        this.stats.prizes.code.push(generateCodeBag(`Prizes_${FigureNames[figure]}_x${appearances}`, approved));
     }
 
     // COMMON
@@ -266,7 +265,13 @@ export default class MathStoreTop {
         let bonos = grid.find(figure => figure === this.config.bonos).length;
         if (bonos > 0) {
             let bonosPositions = grid.reduce((prev, curr, currIndex) => curr === this.config.bonos ? [...prev, currIndex] : prev, []);
-            prizes.push({positions: bonosPositions, figure: this.config.bonos, type: SystemConstants.Bonos, value: this.config.paytable[this.config.bonos][bonos]});
+            prizes.push({positions: bonosPositions, figure: this.config.bonos, type: SystemConstants.Bonos, value: this.config.paytable[this.config.bonos][bonos - 1]});
+        }
+        // Runes
+        let runes = grid.find(figure => figure === Figures.RUNE).length;
+        if (runes > 0) {
+            let runesPositions = grid.reduce((prev, curr, currIndex) => curr === Figures.RUNE ? [...prev, currIndex] : prev, []);
+            prizes.push({positions: runesPositions, figure: Figures.RUNE, type: SystemConstants.Runes, value: this.config.paytable[Figures.RUNE][runes - 1]});
         }
         return prizes;
     }

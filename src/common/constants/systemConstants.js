@@ -3,6 +3,7 @@ export default class SystemConstants {
     static get PanelBottom() { return 'PanelBottom'; }
     static get Coins() { return 'Coins'; }
     static get Bonos() { return 'Bonos'; }
+    static get Runes() { return 'Runes'; }
     static get Minigame() { return 'Minigame'; }
     static get MejoraTuPremio() { return 'MejoraTuPremio'; }
     static get Reel_1() { return 0; }

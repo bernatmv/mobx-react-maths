@@ -2,7 +2,7 @@ import {observable} from 'mobx';
 import {appConfigBottom, Figures, FigureNames} from '../config/appConfig';
 import EventConstants from '../common/constants/eventConstants';
 import SystemConstants from '../common/constants/systemConstants';
-import {generateCodeBag, generateAdvancementsCodeBag} from './helpers/codeGenerator';
+import {generateCodeBag, generateAdvancementsCodeBag} from './helpers/codeGeneratorBottom';
 
 const initialPositions = [0,0,0];
 const noPrizeAcceptancePercentage = 0.25;

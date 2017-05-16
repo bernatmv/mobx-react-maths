@@ -331,7 +331,7 @@ export const appConfigTop = {
         [100],
         [200],
         [500],
-        [1]
+        [0]
     ],
     bonos: SHIP
 };
