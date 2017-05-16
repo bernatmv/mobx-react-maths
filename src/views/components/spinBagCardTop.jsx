@@ -1,5 +1,5 @@
 import React from 'react';
-import {Figures, FigureNames} from '../../config/appConfig';
+import {FigureTopNames as FigureNames, PrizesTop as Prizes, PrizesTopNames as PrizesNames} from '../../config/appConfig';
 import Divider from 'material-ui/Divider';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -7,7 +7,7 @@ import {Card, CardHeader, CardText} from 'material-ui/Card';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import * as styles from '../appContainer.css';
 
-export default class SpinBagCard extends React.Component {
+export default class SpinBagCardTop extends React.Component {
     state = {
         open: false,
     };
@@ -33,17 +33,9 @@ export default class SpinBagCard extends React.Component {
         let stats = this.props.stats;
         let statsList = stats.approved
                         .map((spins, index) => {
-                            if (spins.length) {
-                                return spins.map((advancements, i) => {
-                                    return (advancements > 0)
-                                        ? this.buildStats(`${FigureNames[index]}_A${i + 1}`, (index * 100) + i, stats.approved[index][i], Math.ceil((stats.approved[index][i]/(stats.approved[index][i] + stats.discarded[index][i]))*100), stats.discarded[index][i])
-                                        : null;
-                                });
-                            } else {
-                                return (spins > 0)
-                                    ? this.buildStats(FigureNames[index], index, stats.approved[index], Math.ceil((stats.approved[index]/(stats.approved[index] + stats.discarded[index]))*100), stats.discarded[index])
-                                    : null;
-                            }
+                            return (spins > 0)
+                                ? this.buildStats(PrizesNames[index], index, stats.approved[index], Math.ceil((stats.approved[index]/(stats.approved[index] + stats.discarded[index]))*100), stats.discarded[index])
+                                : null;
                         });
 
         return (

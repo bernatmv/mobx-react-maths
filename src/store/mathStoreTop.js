@@ -38,10 +38,7 @@ export default class MathStoreTop {
 
     constructor(emitter) {
         this.emitter = emitter;
-        this.emitter.addListener(EventConstants.CalculateAll, () => this.calculateAll());
-        this.emitter.addListener(EventConstants.CalculateAllSpins, () => this.calculateAllSpins());
-        this.emitter.addListener(EventConstants.CalculatePrizes, () => this.calculatePrizes());
-        this.emitter.addListener(EventConstants.CalculateBonos, () => this.calculateBonos());
+        this.emitter.addListener(EventConstants.CalculateAllTop, () => this.calculateAll());
     }
 
     // CALCULATE ALL
@@ -107,7 +104,7 @@ export default class MathStoreTop {
         this.safeExecution(() => {
             let approved = this.prizes.approved;
             let discarded = this.prizes.discarded;
-            this.calculateNoPrize(approved[Prizes.NO_PRIZE], discarded[Prizes.NO_PRIZE]);
+            this.calculateNoPrize(approved[Prizes.TOP_NO_PRIZE], discarded[Prizes.TOP_NO_PRIZE]);
             this.calculatePrizesProcess(Figures.BIRD, 1, approved[Prizes.BIRD_x1], discarded[Prizes.BIRD_x1]);
             this.calculatePrizesProcess(Figures.BIRD, 2, approved[Prizes.BIRD_x2], discarded[Prizes.BIRD_x2]);
             this.calculatePrizesProcess(Figures.BIRD, 3, approved[Prizes.BIRD_x3], discarded[Prizes.BIRD_x3]);
@@ -172,7 +169,7 @@ export default class MathStoreTop {
 
     calculateBonosProcess(figure, appearances, approved, discarded) {
         this.allSpins.refs
-            .filter(spin => (spin.prize.filter(p => p.figure === figure).length === appearances))
+            .filter(spin => (spin.grid.filter(f => f === figure).length === appearances))
             .map(spin => {
                 if (this.isBeautiful(spin)) {
                     approved.push(spin);
@@ -201,13 +198,16 @@ export default class MathStoreTop {
 
     isBeautiful(spin) {
         //We don't want: 3 jackpots of the same kind in the grid without a prize
-        if (spin.grid.filter(figure => figure === Figure.BLUE_GEM).length >= 3
-            || spin.grid.filter(figure => figure === Figure.RED_GEM).length >= 3
-            || spin.grid.filter(figure => figure === Figure.GREEN_GEM).length >= 3) {
+        /*
+        not to take into account if we are processing a prize for this figure
+        if (spin.grid.filter(figure => figure === Figures.BLUE_GEM).length >= 3
+            || spin.grid.filter(figure => figure === Figures.RED_GEM).length >= 3
+            || spin.grid.filter(figure => figure === Figures.GREEN_GEM).length >= 3) {
             return false;
         }
+        */
         //We don't want: prizes of different figures (either line or scatter)
-        if (spin.prize.reduce((acc, curr) => acc.includes(curr) ? acc : [...acc, curr], []).length > 1) {
+        if (spin.prize.reduce((acc, curr) => acc.includes(curr.figure) ? acc : [...acc, curr.figure], []).length > 1) {
             return false;
         }
         return true;
@@ -260,22 +260,24 @@ export default class MathStoreTop {
         let prizes = [];
         // Line prize
         this.config.lines.map(line => {
-            if (lineOfSameFigure([
+            if (this.lineOfSameFigure([
                     grid[line[0]],
                     grid[line[1]],
                     grid[line[2]]
                 ])) {
-                prizes.push({positions: line, figure: grid[line[0]], type: SystemConstants.Coins, value: this.config.paytable[grid[line[0]]][0]});
+                if (grid[line[0]] !== this.config.bonos) {
+                    prizes.push({positions: line, figure: grid[line[0]], type: SystemConstants.Coins, value: this.config.paytable[grid[line[0]]][0]});
+                }
             }
         });
         // Bonos
-        let bonos = grid.find(figure => figure === this.config.bonos).length;
+        let bonos = grid.filter(figure => figure === this.config.bonos).length;
         if (bonos > 0) {
             let bonosPositions = grid.reduce((prev, curr, currIndex) => curr === this.config.bonos ? [...prev, currIndex] : prev, []);
             prizes.push({positions: bonosPositions, figure: this.config.bonos, type: SystemConstants.Bonos, value: this.config.paytable[this.config.bonos][bonos - 1]});
         }
         // Runes
-        let runes = grid.find(figure => figure === Figures.RUNE).length;
+        let runes = grid.filter(figure => figure === Figures.RUNE).length;
         if (runes > 0) {
             let runesPositions = grid.reduce((prev, curr, currIndex) => curr === Figures.RUNE ? [...prev, currIndex] : prev, []);
             prizes.push({positions: runesPositions, figure: Figures.RUNE, type: SystemConstants.Runes, value: this.config.paytable[Figures.RUNE][runes - 1]});

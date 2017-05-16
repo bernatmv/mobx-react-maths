@@ -3,13 +3,13 @@ import {observer} from 'mobx-react';
 import * as styles from '../appContainer.css';
 import SystemConstants from '../../common/constants/systemConstants';
 import EventConstants from '../../common/constants/eventConstants';
-import SpinBagCard from '../components/spinBagCard';
+import SpinBagCardTop from '../components/spinBagCardTop';
 import ProgressCardTop from '../components/progressCardTop';
 
 @observer
 export default class TopMath extends React.Component {
     calculateSpins = () => {
-        this.props.emitter.emit(EventConstants.CalculateAll);
+        this.props.emitter.emit(EventConstants.CalculateAllTop);
     };
 
     render() {
@@ -23,7 +23,7 @@ export default class TopMath extends React.Component {
                     isProcessing={this.props.store.isProcessing}
                     />
 
-                <SpinBagCard
+                <SpinBagCardTop
                     title={'Prizes'}
                     stats={store.stats.prizes}
                     />
