@@ -108,8 +108,24 @@ export default class MathStoreTop {
             let approved = this.prizes.approved;
             let discarded = this.prizes.discarded;
             this.calculateNoPrize(approved[Prizes.NO_PRIZE], discarded[Prizes.NO_PRIZE]);
-            this.calculatePrizesProcess(Figures.SHIP, 1, approved[Prizes.SHIP_x1], discarded[Prizes.SHIP_x1]);
-            //TODO: finish
+            this.calculatePrizesProcess(Figures.BIRD, 1, approved[Prizes.BIRD_x1], discarded[Prizes.BIRD_x1]);
+            this.calculatePrizesProcess(Figures.BIRD, 2, approved[Prizes.BIRD_x2], discarded[Prizes.BIRD_x2]);
+            this.calculatePrizesProcess(Figures.BIRD, 3, approved[Prizes.BIRD_x3], discarded[Prizes.BIRD_x3]);
+            this.calculatePrizesProcess(Figures.BIRD, 4, approved[Prizes.BIRD_x4], discarded[Prizes.BIRD_x4]);
+            this.calculatePrizesProcess(Figures.BIRD, 5, approved[Prizes.BIRD_x5], discarded[Prizes.BIRD_x5]);
+            this.calculatePrizesProcess(Figures.LEOPARD, 1, approved[Prizes.LEOPARD_x1], discarded[Prizes.LEOPARD_x1]);
+            this.calculatePrizesProcess(Figures.LEOPARD, 2, approved[Prizes.LEOPARD_x2], discarded[Prizes.LEOPARD_x2]);
+            this.calculatePrizesProcess(Figures.LEOPARD, 3, approved[Prizes.LEOPARD_x3], discarded[Prizes.LEOPARD_x3]);
+            this.calculatePrizesProcess(Figures.LEOPARD, 4, approved[Prizes.LEOPARD_x4], discarded[Prizes.LEOPARD_x4]);
+            this.calculatePrizesProcess(Figures.LEOPARD, 5, approved[Prizes.LEOPARD_x5], discarded[Prizes.LEOPARD_x5]);
+            this.calculatePrizesProcess(Figures.LADY, 1, approved[Prizes.LADY_x1], discarded[Prizes.LADY_x1]);
+            this.calculatePrizesProcess(Figures.LADY, 2, approved[Prizes.LADY_x2], discarded[Prizes.LADY_x2]);
+            this.calculatePrizesProcess(Figures.LADY, 3, approved[Prizes.LADY_x3], discarded[Prizes.LADY_x3]);
+            this.calculatePrizesProcess(Figures.LADY, 4, approved[Prizes.LADY_x4], discarded[Prizes.LADY_x4]);
+            this.calculatePrizesProcess(Figures.LADY, 5, approved[Prizes.LADY_x5], discarded[Prizes.LADY_x5]);
+            this.calculatePrizesProcess(Figures.GREEN_GEM, 1, approved[Prizes.GREEN_GEM_x1], discarded[Prizes.GREEN_GEM_x1]);
+            this.calculatePrizesProcess(Figures.RED_GEM, 1, approved[Prizes.RED_GEM_x1], discarded[Prizes.RED_GEM_x1]);
+            this.calculatePrizesProcess(Figures.BLUE_GEM, 1, approved[Prizes.BLUE_GEM_x1], discarded[Prizes.BLUE_GEM_x1]);
         });
     }
 
@@ -148,9 +164,10 @@ export default class MathStoreTop {
         this.safeExecution(() => {
             let approved = this.prizes.approved;
             let discarded = this.prizes.discarded;
-            this.calculateBonosProcess(Figures.SHIP, 1, approved[Figures.SHIP_x1], discarded[Figures.SHIP_x1]);
-            this.calculateBonosProcess(Figures.SHIP, 2, approved[Figures.SHIP_x2], discarded[Figures.SHIP_x2]);
-            this.calculateBonosProcess(Figures.SHIP, 3, approved[Figures.SHIP_x3], discarded[Figures.SHIP_x3]);
+            this.calculateBonosProcess(Figures.SHIP, 1, approved[Prizes.SHIP_x1], discarded[Prizes.SHIP_x1]);
+            this.calculateBonosProcess(Figures.SHIP, 2, approved[Prizes.SHIP_x2], discarded[Prizes.SHIP_x2]);
+            this.calculateBonosProcess(Figures.SHIP, 3, approved[Prizes.SHIP_x3], discarded[Prizes.SHIP_x3]);
+            this.calculateBonosProcess(Figures.RUNE, 1, approved[Prizes.RUNE_x1], discarded[Prizes.RUNE_x1]);
         });
     }
 
@@ -164,7 +181,7 @@ export default class MathStoreTop {
                     discarded.push(spin);
                 }
             });
-        this.printRawArrays('BONOS x' + numBonos, [approved, discarded]);
+        this.printRawArrays('SCATTER x' + numBonos, [approved, discarded]);
         this.stats.prizes.code.push(generateCodeBag(`Prizes_${FigureNames[figure]}_x${numBonos}`, approved));
     }
 
