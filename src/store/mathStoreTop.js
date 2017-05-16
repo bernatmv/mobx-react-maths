@@ -200,9 +200,16 @@ export default class MathStoreTop {
     }
 
     isBeautiful(spin) {
-        //TODO: no 3 minigames o 3 jackpots of the same kind in the grid without a prize
-        //TODO: no line prizes of different figures
-        //TODO: no line prize and bonos prize
+        //We don't want: 3 jackpots of the same kind in the grid without a prize
+        if (spin.grid.filter(figure => figure === Figure.BLUE_GEM).length >= 3
+            || spin.grid.filter(figure => figure === Figure.RED_GEM).length >= 3
+            || spin.grid.filter(figure => figure === Figure.GREEN_GEM).length >= 3) {
+            return false;
+        }
+        //We don't want: prizes of different figures (either line or scatter)
+        if (spin.prize.reduce((acc, curr) => acc.includes(curr) ? acc : [...acc, curr], []).length > 1) {
+            return false;
+        }
         return true;
     }
 
